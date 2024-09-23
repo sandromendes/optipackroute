@@ -102,6 +102,7 @@ Requisição: JSON com matriz de adjacências e nós de partida e destino.
     "startNode": 1,
     "targetNode": 5
 }
+```
 * Resposta:
 ```json
 {
@@ -111,7 +112,7 @@ Requisição: JSON com matriz de adjacências e nós de partida e destino.
     "predecessorMatrix": [[...]]
 }
 ```
-```
+
 ### 4. A-Star
 ```
 Endpoint: /api/v1/router/astar
@@ -172,8 +173,10 @@ http://localhost:8080/swagger-ui.html
 ## Autenticação
 Para autenticar-se corretamente e acessar os endpoints, use as seguintes credenciais:
 
-* Usuário: optipackroute
-* Senha: f47ac10b-58cc-4372-a567-0e02b2c3d479
+```
+Usuário: optipackroute
+Senha: f47ac10b-58cc-4372-a567-0e02b2c3d479
+```
 
 Essas credenciais estão configuradas no arquivo InMemoryAuthWebSecurityConfigurer.java e são necessárias para garantir que apenas usuários autenticados possam utilizar os serviços.
 
@@ -186,11 +189,7 @@ Você também pode usar o Postman para enviar requisições POST diretamente par
 1. Abra o Postman e crie uma nova requisição.
 2. Configure a URL para http://localhost:8080/api/v1/router/floyd-warshall (ou outro endpoint).
 3. No Postman, vá até a aba Authorization e selecione o tipo Basic Auth.
-4. Informe as credenciais:
-```
-Username: optipackroute
-Password: f47ac10b-58cc-4372-a567-0e02b2c3d479
-```
+4. Informe as credenciais: Username: **optipackroute** e Password: **f47ac10b-58cc-4372-a567-0e02b2c3d479**
 
 ![image](https://github.com/user-attachments/assets/4959e31d-4a16-4fd9-b953-b10a4dc7e081)
 
