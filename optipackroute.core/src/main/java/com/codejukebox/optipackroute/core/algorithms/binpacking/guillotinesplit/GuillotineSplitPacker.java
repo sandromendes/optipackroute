@@ -74,7 +74,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
     private boolean fitsInSpace(Box box, Space space) {
         return box.getDimensions().getLength() <= space.getLength() &&
                box.getDimensions().getHeight() <= space.getHeight() &&
-               box.getDimensions().getDepth() <= space.getDepth();
+               box.getDimensions().getWidth() <= space.getDepth();
     }
 
     private void placeBox(Box box, Space space) {
@@ -88,7 +88,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
     private void splitSpace(Space space, Box box) {
         int remainingLength = space.getLength() - box.getDimensions().getLength();
         int remainingHeight = space.getHeight() - box.getDimensions().getHeight();
-        int remainingDepth = space.getDepth() - box.getDimensions().getDepth();
+        int remainingDepth = space.getDepth() - box.getDimensions().getWidth();
 
         // Remover o espaço que foi ocupado pela caixa
         availableSpaces.remove(space);
@@ -120,7 +120,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
             availableSpaces.add(new Space(
                 space.getX(),
                 space.getY(),
-                space.getZ() + box.getDimensions().getDepth(),
+                space.getZ() + box.getDimensions().getWidth(),
                 space.getLength(),
                 space.getHeight(),
                 remainingDepth

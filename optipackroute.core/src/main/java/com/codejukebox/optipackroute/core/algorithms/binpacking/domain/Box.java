@@ -1,28 +1,56 @@
 package com.codejukebox.optipackroute.core.algorithms.binpacking.domain;
 
 public class Box {
-    private String label;
+
+    private int ID;
+
     private Dimensions dimensions;
 
-    public Box(String id, int length, int height, int depth) {
-        this.label = id;
-        this.dimensions = new Dimensions(length, height, depth);
+    private String label; 
+            
+    public Box() {
+		super();
+	}
+    
+	public Box(String label, int x, int y, int z) {
+		super();
+		this.dimensions = new Dimensions(x, y, z);
+		this.label = label;
+	}
+
+	public int getID() {
+        return ID;
     }
 
-    public String getLabel() {
-        return label;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Dimensions getDimensions() {
         return dimensions;
     }
-    
-    public int getVolume() {
-        return dimensions.getLength() * dimensions.getHeight() * dimensions.getDepth();
-    }
 
+    public void setDimensions(Dimensions dimensions) {
+        this.dimensions = dimensions;
+    }
+    
     @Override
     public String toString() {
-        return "Box " + label + " [length=" + dimensions.getLength() + ", height=" + dimensions.getHeight() + ", depth=" + dimensions.getDepth() + "]";
+        return "Width: " + Integer.toString(dimensions.getWidth())
+            + ", Height: " + Integer.toString(dimensions.getHeight())
+            + ", Length: " + Integer.toString(dimensions.getLength());
     }
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	public int getVolume() {
+		return dimensions.getLength()*dimensions.getWidth()*dimensions.getHeight();
+	}
 }
+

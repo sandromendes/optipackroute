@@ -82,7 +82,7 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
         Coordinates coordinates = cornerPoint.getCoordinates();
         return (coordinates.getX() + box.getDimensions().getLength() <= containerLength) &&
                (coordinates.getY() + box.getDimensions().getHeight() <= containerHeight) &&
-               (coordinates.getZ() + box.getDimensions().getDepth() <= containerDepth);
+               (coordinates.getZ() + box.getDimensions().getWidth() <= containerDepth);
     }
 
     private Box selectBox() {
@@ -90,7 +90,7 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
         return availableBoxes.stream()
                 .max(Comparator.comparingInt(box -> box.getDimensions().getLength() *
                                                     box.getDimensions().getHeight() *
-                                                    box.getDimensions().getDepth()))
+                                                    box.getDimensions().getWidth()))
                 .orElse(null);
     }
 
@@ -101,7 +101,7 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
         List<Coordinates> newPoints = new ArrayList<>();
         newPoints.add(new Coordinates(coordinates.getX() + box.getDimensions().getLength(), coordinates.getY(), coordinates.getZ()));
         newPoints.add(new Coordinates(coordinates.getX(), coordinates.getY() + box.getDimensions().getHeight(), coordinates.getZ()));
-        newPoints.add(new Coordinates(coordinates.getX(), coordinates.getY(), coordinates.getZ() + box.getDimensions().getDepth()));
+        newPoints.add(new Coordinates(coordinates.getX(), coordinates.getY(), coordinates.getZ() + box.getDimensions().getWidth()));
 
         // Adiciona os novos pontos de canto à lista
         for (Coordinates point : newPoints) {

@@ -1,30 +1,38 @@
 package com.codejukebox.optipackroute.core.algorithms.binpacking.domain;
 
 public class Dimensions {
-    private int length;
-    private int height;
-    private int depth;
 
-    public Dimensions(int length, int height, int depth) {
+    private int width, length, height;
+
+    public Dimensions(int width, int length, int height) {
+        this.width = width;
         this.length = length;
         this.height = height;
-        this.depth = depth;
-    }
-
-    public int getLength() {
-        return length;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public int getDepth() {
-        return depth;
+    public void setHeight(int height) {
+        this.height = height;
     }
-    
-    public int getVolume() {
-        return length * height * depth;
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }
+
 

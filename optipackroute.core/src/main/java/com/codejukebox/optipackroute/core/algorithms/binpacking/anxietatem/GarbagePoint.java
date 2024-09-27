@@ -2,79 +2,93 @@ package com.codejukebox.optipackroute.core.algorithms.binpacking.anxietatem;
 
 import java.util.ArrayList;
 
+import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.CornerPoint;
+
+/**
+ * Class responsible for cleaning up duplicate or redundant corner points.
+ */
 public class GarbagePoint {
 
+    /**
+     * Constructs a new instance of GarbagePoint.
+     */
     public GarbagePoint() {
     }
 
-    public ArrayList<PontoCanto> coleta(ArrayList<PontoCanto> pontos, ArrayList<PontoCanto> APE) {
+    /**
+     * Removes redundant or duplicate corner points from the given list.
+     *
+     * @param points The list of corner points to check for redundancy.
+     * @param availablePoints The list of available corner points to be cleaned.
+     * @return The updated list of available corner points after removal of redundancies.
+     */
+    public ArrayList<CornerPoint> collect(ArrayList<CornerPoint> points, ArrayList<CornerPoint> availablePoints) {
 
-        for (int j = 0; j < pontos.size(); j++) {
-            for (int i = 0; i < APE.size(); i++) {
-                if ((pontos.get(j).getCoordenada().getX() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() + pontos.get(j).getCaixa().getDimensoes().getComprimento() == APE.get(i).getCoordenada().getZ())) {
-                    APE.remove(i);
-                    System.out.println("Removeu ponto de canto. Condição 1");
+        for (int j = 0; j < points.size(); j++) {
+            for (int i = 0; i < availablePoints.size(); i++) {
+                if ((points.get(j).getCoordinates().getX() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() + points.get(j).getBox().getDimensions().getLength() == availablePoints.get(i).getCoordinates().getZ())) {
+                    availablePoints.remove(i);
+                    System.out.println("Removed corner point. Condition 1");
                 }
-                if ((pontos.get(j).getCoordenada().getX() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() + pontos.get(j).getCaixa().getDimensoes().getAltura() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 2");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() + points.get(j).getBox().getDimensions().getHeight() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 2");
+                    availablePoints.remove(i);
                 }
-                if ((pontos.get(j).getCoordenada().getX() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() + pontos.get(j).getCaixa().getDimensoes().getAltura() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() + pontos.get(j).getCaixa().getDimensoes().getComprimento() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 3");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() + points.get(j).getBox().getDimensions().getHeight() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() + points.get(j).getBox().getDimensions().getLength() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 3");
+                    availablePoints.remove(i);
                 }
-                if ((pontos.get(j).getCoordenada().getX() + pontos.get(j).getCaixa().getDimensoes().getLargura() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 4");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() + points.get(j).getBox().getDimensions().getWidth() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 4");
+                    availablePoints.remove(i);
                 }
-                if ((pontos.get(j).getCoordenada().getX() + pontos.get(j).getCaixa().getDimensoes().getLargura() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() + pontos.get(j).getCaixa().getDimensoes().getComprimento() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 5");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() + points.get(j).getBox().getDimensions().getWidth() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() + points.get(j).getBox().getDimensions().getLength() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 5");
+                    availablePoints.remove(i);
                 }
-                if ((pontos.get(j).getCoordenada().getX() + pontos.get(j).getCaixa().getDimensoes().getLargura() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() + pontos.get(j).getCaixa().getDimensoes().getAltura() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 6");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() + points.get(j).getBox().getDimensions().getWidth() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() + points.get(j).getBox().getDimensions().getHeight() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 6");
+                    availablePoints.remove(i);
                 }
-                if ((pontos.get(j).getCoordenada().getX() + pontos.get(j).getCaixa().getDimensoes().getLargura() == APE.get(i).getCoordenada().getX())
-                        && (pontos.get(j).getCoordenada().getY() + pontos.get(j).getCaixa().getDimensoes().getAltura() == APE.get(i).getCoordenada().getY())
-                        && (pontos.get(j).getCoordenada().getZ() + pontos.get(j).getCaixa().getDimensoes().getComprimento() == APE.get(i).getCoordenada().getZ())) {
-                    System.out.println("Removeu ponto de canto. Condição 7");
-                    APE.remove(i);
+                if ((points.get(j).getCoordinates().getX() + points.get(j).getBox().getDimensions().getWidth() == availablePoints.get(i).getCoordinates().getX())
+                        && (points.get(j).getCoordinates().getY() + points.get(j).getBox().getDimensions().getHeight() == availablePoints.get(i).getCoordinates().getY())
+                        && (points.get(j).getCoordinates().getZ() + points.get(j).getBox().getDimensions().getLength() == availablePoints.get(i).getCoordinates().getZ())) {
+                    System.out.println("Removed corner point. Condition 7");
+                    availablePoints.remove(i);
                 }
             }
-
         }
 
-        for (int i = 0; i < APE.size(); i++) {
-            PontoCanto pci, pcj;
-            pci = APE.get(i);
+        for (int i = 0; i < availablePoints.size(); i++) {
+            CornerPoint pci, pcj;
+            pci = availablePoints.get(i);
 
-            for (int j = i; j < APE.size(); j++) {
-                pcj = APE.get(j);
+            for (int j = i; j < availablePoints.size(); j++) {
+                pcj = availablePoints.get(j);
                 if (i != j) {
-                    if (pci.getCoordenada().getX() == pcj.getCoordenada().getX()
-                            && pci.getCoordenada().getY() == pcj.getCoordenada().getY()
-                            && pci.getCoordenada().getZ() == pcj.getCoordenada().getZ()) {
-                        APE.remove(pcj);
-                        System.out.println("Removeu ponto de canto idêntico");
+                    if (pci.getCoordinates().getX() == pcj.getCoordinates().getX()
+                            && pci.getCoordinates().getY() == pcj.getCoordinates().getY()
+                            && pci.getCoordinates().getZ() == pcj.getCoordinates().getZ()) {
+                        availablePoints.remove(pcj);
+                        System.out.println("Removed duplicate corner point");
                     }
                 }
             }
-
         }
 
-        return APE;
+        return availablePoints;
     }
 }
+

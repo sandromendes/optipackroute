@@ -70,7 +70,7 @@ public class BestFitDecreasingHeightPacker implements IBinPackingAlgorithm {
     private boolean canFit(Box box, Space space) {
         return box.getDimensions().getLength() <= space.getLength()
                 && box.getDimensions().getHeight() <= space.getHeight()
-                && box.getDimensions().getDepth() <= space.getDepth();
+                && box.getDimensions().getWidth()<= space.getDepth();
     }
 
     private void placeBox(Box box, Space space) {

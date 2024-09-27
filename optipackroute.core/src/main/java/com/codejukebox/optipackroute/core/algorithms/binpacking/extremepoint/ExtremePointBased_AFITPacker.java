@@ -55,7 +55,7 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
     private boolean canFit(Box box, Space space) {
         return box.getDimensions().getLength() <= space.getLength()
                 && box.getDimensions().getHeight() <= space.getHeight()
-                && box.getDimensions().getDepth() <= space.getDepth();
+                && box.getDimensions().getWidth() <= space.getDepth();
     }
 
     private void placeBox(Box box, Space extremePoint) {
@@ -73,7 +73,7 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
 
         int boxLength = box.getDimensions().getLength();
         int boxHeight = box.getDimensions().getHeight();
-        int boxDepth = box.getDimensions().getDepth();
+        int boxDepth = box.getDimensions().getWidth();
 
         // Criar novos pontos extremos nos cantos da caixa empacotada
         if (space.getX() + boxLength < containerLength) {
