@@ -9,10 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codejukebox</groupId>
-	<artifactId>optipackroute</artifactId>
+	<artifactId>optipackroute.api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>optipackroute</name>
+	<name>optipackroute.api</name>
 	<description>Focused in solve classic route and load problems</description>
 	<url/>
 	<licenses>
@@ -46,19 +45,11 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
-		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
-				
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -69,35 +60,26 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	    <!-- JUnit 5 -->
+		<dependency>
+		    <groupId>org.springdoc</groupId>
+		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		    <version>2.3.0</version>
+		</dependency>		
 	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter-api</artifactId>
-	        <version>5.8.2</version>
-	        <scope>test</scope>
+		    <groupId>com.codejukebox</groupId>
+		    <artifactId>optipackroute.core</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+	    </dependency>		
+	    <dependency>
+		    <groupId>com.codejukebox</groupId>
+		    <artifactId>optipackroute.domain</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
 	    </dependency>
 	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter-engine</artifactId>
-	        <version>5.8.2</version>
-	        <scope>test</scope>
-	    </dependency>
-	
-	    <!-- Mockito for mocking -->
-	    <dependency>
-	        <groupId>org.mockito</groupId>
-	        <artifactId>mockito-core</artifactId>
-	        <version>4.5.1</version>
-	        <scope>test</scope>
-	    </dependency>
-	
-	    <!-- Spring Test -->
-	    <dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-test</artifactId>
-	        <version>5.3.22</version>
-	        <scope>test</scope>
-	    </dependency>
+		    <groupId>com.codejukebox</groupId>
+		    <artifactId>optipackroute.application</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+	    </dependency>		    		
 	</dependencies>
 
 	<build>
@@ -117,10 +99,4 @@
 		</plugins>
 	</build>
 
-	<modules>
-		<module>optipackroute.core</module>
-		<module>optipackroute.application</module>
-		<module>optipackroute.domain</module>
-		<module>optipackroute.api</module>
-	</modules>
 </project>
