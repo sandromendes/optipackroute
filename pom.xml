@@ -11,6 +11,7 @@
 	<groupId>com.codejukebox</groupId>
 	<artifactId>optipackroute</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>optipackroute</name>
 	<description>Focused in solve classic route and load problems</description>
 	<url/>
@@ -96,7 +97,7 @@
 	        <artifactId>spring-test</artifactId>
 	        <version>5.3.22</version>
 	        <scope>test</scope>
-	    </dependency>		
+	    </dependency>
 	</dependencies>
 
 	<build>
@@ -116,4 +117,10 @@
 		</plugins>
 	</build>
 
+	<modules>
+		<module>optipackroute.core</module>
+		<module>optipackroute.application</module>
+		<module>optipackroute.domain</module>
+		<module>optipackroute.api</module>
+	</modules>
 </project>
