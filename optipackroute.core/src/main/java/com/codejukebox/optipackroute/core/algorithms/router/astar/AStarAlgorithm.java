@@ -30,7 +30,7 @@ public class AStarAlgorithm {
         openSet.add(new Node(startNode, fScores[startNode]));
 
         while (!openSet.isEmpty()) {
-            Node currentNode = openSet.poll();
+            var currentNode = openSet.poll();
             int currentIndex = currentNode.index;
 
             if (currentIndex == goalNode) {
@@ -55,7 +55,7 @@ public class AStarAlgorithm {
     }
 
     private AStarResult reconstructPath(int[] predecessors, int goalNode) {
-        List<Integer> path = new ArrayList<>();
+        var path = new ArrayList<Integer>();
         int currentNode = goalNode;
         while (currentNode != -1) {
             path.add(currentNode);

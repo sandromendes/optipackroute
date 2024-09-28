@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Box;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Coordinates;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.CornerPoint;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackedBox;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackingResult;
 import com.codejukebox.optipackroute.core.algorithms.binpacking.interfaces.IBinPackingAlgorithm;
+import com.codejukebox.optipackroute.domain.models.binpacking.Box;
+import com.codejukebox.optipackroute.domain.models.binpacking.Coordinates;
+import com.codejukebox.optipackroute.domain.models.binpacking.CornerPoint;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackedBox;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackingResult;
 
 public class BottomLeftBackPacker implements IBinPackingAlgorithm {
     private List<CornerPoint> availableCornerPoints;
@@ -43,11 +43,11 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
             Box box = selectBox();
             if (box == null) break; // Se não houver caixa para empacotar, sair do loop
 
-            CornerPoint bestCornerPoint = findBestCornerPoint(box);
+            var bestCornerPoint = findBestCornerPoint(box);
 
             if (bestCornerPoint != null) {
-                Coordinates position = bestCornerPoint.getCoordinates();
-                PackedBox packedBox = new PackedBox(box, position.getX(), position.getY(), position.getZ());
+                var position = bestCornerPoint.getCoordinates();
+                var packedBox = new PackedBox(box, position.getX(), position.getY(), position.getZ());
                 packedBoxes.add(packedBox);
                 availableBoxes.remove(box);
                 generateNewCornerPoints(bestCornerPoint, box);
@@ -64,7 +64,7 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
 
     @Override
     public void displayPackedBoxes() {
-        for (PackedBox box : packedBoxes) {
+        for (var box : packedBoxes) {
             System.out.println("Packed Box: " + box);
         }
     }
@@ -79,7 +79,7 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
     }
 
     private boolean fitsInContainer(Box box, CornerPoint cornerPoint) {
-        Coordinates coordinates = cornerPoint.getCoordinates();
+        var coordinates = cornerPoint.getCoordinates();
         return (coordinates.getX() + box.getDimensions().getLength() <= containerLength) &&
                (coordinates.getY() + box.getDimensions().getHeight() <= containerHeight) &&
                (coordinates.getZ() + box.getDimensions().getWidth() <= containerDepth);
@@ -95,10 +95,10 @@ public class BottomLeftBackPacker implements IBinPackingAlgorithm {
     }
 
     private void generateNewCornerPoints(CornerPoint cornerPoint, Box box) {
-        Coordinates coordinates = cornerPoint.getCoordinates();
+        var coordinates = cornerPoint.getCoordinates();
 
         // Gera novos pontos de canto com base nas dimensões da caixa embalada
-        List<Coordinates> newPoints = new ArrayList<>();
+        var newPoints = new ArrayList<Coordinates>();
         newPoints.add(new Coordinates(coordinates.getX() + box.getDimensions().getLength(), coordinates.getY(), coordinates.getZ()));
         newPoints.add(new Coordinates(coordinates.getX(), coordinates.getY() + box.getDimensions().getHeight(), coordinates.getZ()));
         newPoints.add(new Coordinates(coordinates.getX(), coordinates.getY(), coordinates.getZ() + box.getDimensions().getWidth()));

@@ -19,11 +19,11 @@ public class DijkstraAlgorithm {
         Arrays.fill(predecessors, -1);
         distances[startNode] = 0;
 
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>((a, b) -> Integer.compare(a.distance, b.distance));
+        var priorityQueue = new PriorityQueue<Node>((a, b) -> Integer.compare(a.distance, b.distance));
         priorityQueue.add(new Node(startNode, 0));
 
         while (!priorityQueue.isEmpty()) {
-            Node currentNode = priorityQueue.poll();
+            var currentNode = priorityQueue.poll();
             int currentIndex = currentNode.index;
 
             if (visited[currentIndex]) continue;

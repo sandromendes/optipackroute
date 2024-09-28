@@ -322,7 +322,7 @@ public class FloydWarshallAlgorithmEnhanced {
 	    long startTime = System.nanoTime();
 		
 		// Initialize variables
-		PermutationGenerator generator = new PermutationGenerator(elements.size());
+		var generator = new PermutationGenerator(elements.size());
 		int[] indices;
 		int cost = 0;
 		int partialCost;
@@ -339,7 +339,7 @@ public class FloydWarshallAlgorithmEnhanced {
 			indices = generator.getNext();
 			
 			key++;
-			List<PathCost> paths = new ArrayList<PathCost>();
+			var paths = new ArrayList<PathCost>();
 			
 			for (int i = 0; i < indices.length - 1; i++) {		
 				cityPairs[i][0] = elements.get(indices[i]);
@@ -373,7 +373,7 @@ public class FloydWarshallAlgorithmEnhanced {
 
 		result.setSubPaths(iterations);
 		
-		List<Integer> optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
+		var optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
 		result.setPath(optimalPathList);
 		result.setTotalCost(minCost);
 		

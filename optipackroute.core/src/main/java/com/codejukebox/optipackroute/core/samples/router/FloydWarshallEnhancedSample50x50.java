@@ -16,10 +16,10 @@ public static final int INF = ConstantsUtil.INFINITY;
     private static void runFloydWarshallEnhanced(){        
         int[][] matrix = getSourceMatrix50x50();
         
-        FloydWarshallAlgorithmEnhanced floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
+        var floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
         floydWarshall.runPreProcessor();
 
-        ArrayList<Integer> nodes = new ArrayList<>();
+        var nodes = new ArrayList<Integer>();
         nodes.add(1);
         nodes.add(4); // Initial node
         nodes.add(7);
@@ -32,7 +32,7 @@ public static final int INF = ConstantsUtil.INFINITY;
         
         floydWarshall.findOptimalConfiguration(nodes, nodes.get(2));
         
-        FloydWarshallEnhancedResult result = floydWarshall.getResult();
+        var result = floydWarshall.getResult();
 
         printResult(result, false);
     }

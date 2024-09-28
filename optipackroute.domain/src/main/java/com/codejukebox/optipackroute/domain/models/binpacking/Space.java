@@ -1,4 +1,4 @@
-package com.codejukebox.optipackroute.core.algorithms.binpacking.domain;
+package com.codejukebox.optipackroute.domain.models.binpacking;
 
 public class Space {
     private int x, y, z;  // Coordenadas do canto inferior esquerdo do espaço

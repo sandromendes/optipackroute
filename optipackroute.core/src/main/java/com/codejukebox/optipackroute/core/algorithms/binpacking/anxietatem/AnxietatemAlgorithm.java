@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Box;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Coordinates;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.CornerPoint;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Dimensions;
+import com.codejukebox.optipackroute.domain.models.binpacking.Box;
+import com.codejukebox.optipackroute.domain.models.binpacking.Coordinates;
+import com.codejukebox.optipackroute.domain.models.binpacking.CornerPoint;
+import com.codejukebox.optipackroute.domain.models.binpacking.Dimensions;
 
 /**
  * The Packer class manages the packing of boxes into a container, 
@@ -45,9 +45,9 @@ public class AnxietatemAlgorithm {
     public Box chooseBox() {
 
         Box box = null;
-        Random random = new Random();
+        var random = new Random();
 
-        int randomIndex = random.nextInt(unpackedBoxes.size());
+        var randomIndex = random.nextInt(unpackedBoxes.size());
         box = unpackedBoxes.get(randomIndex);
 
         packedBoxes.add(box);
@@ -75,7 +75,7 @@ public class AnxietatemAlgorithm {
         CornerPoint cornerPoint = null;
 
         //Random Heuristic
-        Random random = new Random();
+        var random = new Random();
         int randomIndex = random.nextInt(availableCornerPoints.size());
 
         System.out.println("Chosen random number: " + randomIndex);
@@ -109,9 +109,9 @@ public class AnxietatemAlgorithm {
         unpackedBoxes = new ArrayList<Box>();
 
         for (int i = 0; i < limit; i++) {
-            Box box = new Box();
+            var box = new Box();
             box.setID(i);
-            Dimensions dimensions = new Dimensions(8, 5, 4);
+            var dimensions = new Dimensions(8, 5, 4);
             box.setDimensions(dimensions);
             unpackedBoxes.add(box);
         }
@@ -129,15 +129,15 @@ public class AnxietatemAlgorithm {
     public void loadRandomBoxArray() {
 
         unpackedBoxes = new ArrayList<Box>();
-        Random random = new Random();
+        var random = new Random();
         int width, length, height;
         for (int i = 0; i < 200; i++) {
-            Box box = new Box();
+            var box = new Box();
             box.setID(i);
             width = random.nextInt(10) + 1;
             length = random.nextInt(10) + 1;
             height = random.nextInt(10) + 1;
-            Dimensions dimensions = new Dimensions(width, length, height);
+            var dimensions = new Dimensions(width, length, height);
             box.setDimensions(dimensions);
             unpackedBoxes.add(box);
         }
@@ -198,10 +198,10 @@ public class AnxietatemAlgorithm {
                 System.out.println("Corner with coordinates: " + cornerPoint.getCoordinates().getX() + "," + cornerPoint.getCoordinates().getY() + "," + cornerPoint.getCoordinates().getZ() + " CHOSEN. Condition st = 0");
             }
 
-            Coordinates cornerCoordinates = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ());
-            Coordinates boxXCoordinate = new Coordinates(width, 0, 0);
-            Coordinates boxYCoordinate = new Coordinates(0, height, 0);
-            Coordinates boxZCoordinate = new Coordinates(0, 0, length);
+            var cornerCoordinates = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ());
+            var boxXCoordinate = new Coordinates(width, 0, 0);
+            var boxYCoordinate = new Coordinates(0, height, 0);
+            var boxZCoordinate = new Coordinates(0, 0, length);
 
             if ((calculateDistanceBetweenPoints(cornerCoordinates, boxXCoordinate) > selectedBox.getDimensions().getWidth())
                     && (calculateDistanceBetweenPoints(cornerCoordinates, boxYCoordinate) > selectedBox.getDimensions().getHeight())
@@ -210,11 +210,10 @@ public class AnxietatemAlgorithm {
                 generateCornerPoint(cornerPoint, selectedBox);
                 state = 1;
             } else {
-
                 state = 0;
             }
 
-             Runtime runtime = Runtime.getRuntime();
+             var runtime = Runtime.getRuntime();
              runtime.gc();
         }
 
@@ -235,65 +234,74 @@ public class AnxietatemAlgorithm {
         // if pci = <0,0,0>
 
         Coordinates coordinate;
-        ArrayList<CornerPoint> points = new ArrayList<CornerPoint>();
+        var points = new ArrayList<CornerPoint>();
 
         if ((cornerPoint.getCoordinates().getX() == 0) && (cornerPoint.getCoordinates().getY() == 0) && (cornerPoint.getCoordinates().getZ() == 0)) {
             // Create new corner points
 
             coordinate = new Coordinates(box.getDimensions().getWidth(), 0, 0);
-            CornerPoint pci1 = new CornerPoint(coordinate);
-            pci1.setBox(box);
+            var cornerPointByWidth = new CornerPoint(coordinate);
+            cornerPointByWidth.setBox(box);
             
             System.out.println("Point with coordinates: " 
-                    + pci1.getCoordinates().getX() + "," 
-                    + pci1.getCoordinates().getY() + "," 
-                    + pci1.getCoordinates().getZ() + " GENERATED");
+                    + cornerPointByWidth.getCoordinates().getX() + "," 
+                    + cornerPointByWidth.getCoordinates().getY() + "," 
+                    + cornerPointByWidth.getCoordinates().getZ() + " GENERATED");
             
-            availableCornerPoints.add(pci1);
-            points.add(pci1);
+            availableCornerPoints.add(cornerPointByWidth);
+            points.add(cornerPointByWidth);
             
             coordinate = new Coordinates(0, box.getDimensions().getHeight(), 0);
-            CornerPoint pci2 = new CornerPoint(coordinate);
-            pci2.setBox(box);
+            var cornerPointByHeight = new CornerPoint(coordinate);
+            cornerPointByHeight.setBox(box);
             
             System.out.println("Point with coordinates: " 
-                    + pci2.getCoordinates().getX() + "," 
-                    + pci2.getCoordinates().getY() + "," 
-                    + pci2.getCoordinates().getZ() + " GENERATED");
+                    + cornerPointByHeight.getCoordinates().getX() + "," 
+                    + cornerPointByHeight.getCoordinates().getY() + "," 
+                    + cornerPointByHeight.getCoordinates().getZ() + " GENERATED");
             
-            availableCornerPoints.add(pci2);
-            points.add(pci2);
+            availableCornerPoints.add(cornerPointByHeight);
+            points.add(cornerPointByHeight);
             
             coordinate = new Coordinates(0, 0, box.getDimensions().getLength());
-            CornerPoint pci3 = new CornerPoint(coordinate);
-            pci3.setBox(box);
+            var cornerPointByLength = new CornerPoint(coordinate);
+            cornerPointByLength.setBox(box);
             
             System.out.println("Point with coordinates: " 
-                    + pci3.getCoordinates().getX() + "," 
-                    + pci3.getCoordinates().getY() + "," 
-                    + pci3.getCoordinates().getZ() + " GENERATED");
+                    + cornerPointByLength.getCoordinates().getX() + "," 
+                    + cornerPointByLength.getCoordinates().getY() + "," 
+                    + cornerPointByLength.getCoordinates().getZ() 
+                    + " GENERATED");
 
-            availableCornerPoints.add(pci3);
-            points.add(pci3);
+            availableCornerPoints.add(cornerPointByLength);
+            points.add(cornerPointByLength);
         } else {
 
             if (cornerPoint.getBox().getDimensions().getWidth() < box.getDimensions().getWidth()) {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX() + cornerPoint.getBox().getDimensions().getWidth(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ());
                 
-                CornerPoint generatedByWidth = new CornerPoint(coordinate);
+                var generatedByWidth = new CornerPoint(coordinate);
                 generatedByWidth.setBox(box);
                 
-                System.out.println("Point with coordinates: " + generatedByWidth.getCoordinates().getX() + "," + generatedByWidth.getCoordinates().getY() + "," + generatedByWidth.getCoordinates().getZ() + " GENERATED");
+                System.out.println("Point with coordinates: " 
+                		+ generatedByWidth.getCoordinates().getX() + "," 
+                		+ generatedByWidth.getCoordinates().getY() 
+                		+ "," + generatedByWidth.getCoordinates().getZ() 
+                		+ " GENERATED");
                 
                 availableCornerPoints.add(generatedByWidth);
                 points.add(generatedByWidth);
             } else {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX() + box.getDimensions().getWidth(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ());
                 
-                CornerPoint generatedByWidth = new CornerPoint(coordinate);
+                var generatedByWidth = new CornerPoint(coordinate);
                 generatedByWidth.setBox(box);
                 
-                System.out.println("Point with coordinates: " + generatedByWidth.getCoordinates().getX() + "," + generatedByWidth.getCoordinates().getY() + "," + generatedByWidth.getCoordinates().getZ() + " GENERATED");
+                System.out.println("Point with coordinates: " 
+                		+ generatedByWidth.getCoordinates().getX() + "," 
+                		+ generatedByWidth.getCoordinates().getY() + "," 
+                		+ generatedByWidth.getCoordinates().getZ() 
+                		+ " GENERATED");
                 
                 availableCornerPoints.add(generatedByWidth);
                 points.add(generatedByWidth);
@@ -302,20 +310,28 @@ public class AnxietatemAlgorithm {
             if (cornerPoint.getBox().getDimensions().getLength() < box.getDimensions().getLength()) {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ() + cornerPoint.getBox().getDimensions().getLength());
                 
-                CornerPoint generatedByLength = new CornerPoint(coordinate);
+                var generatedByLength = new CornerPoint(coordinate);
                 generatedByLength.setBox(box);
                 
-                System.out.println("Point with coordinates: " + generatedByLength.getCoordinates().getX() + "," + generatedByLength.getCoordinates().getY() + "," + generatedByLength.getCoordinates().getZ() + " GENERATED");
+                System.out.println("Point with coordinates: " 
+                		+ generatedByLength.getCoordinates().getX() + "," 
+                		+ generatedByLength.getCoordinates().getY() + "," 
+                		+ generatedByLength.getCoordinates().getZ() 
+                		+ " GENERATED");
                 
                 availableCornerPoints.add(generatedByLength);
                 points.add(generatedByLength);
             } else {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY(), cornerPoint.getCoordinates().getZ() + box.getDimensions().getLength());
                 
-                CornerPoint generatedByLength = new CornerPoint(coordinate);
+                var generatedByLength = new CornerPoint(coordinate);
                 generatedByLength.setBox(box);
                 
-                System.out.println("Point with coordinates: " + generatedByLength.getCoordinates().getX() + "," + generatedByLength.getCoordinates().getY() + "," + generatedByLength.getCoordinates().getZ() + " GENERATED");
+                System.out.println("Point with coordinates: " 
+                		+ generatedByLength.getCoordinates().getX() + "," 
+                		+ generatedByLength.getCoordinates().getY() + "," 
+                		+ generatedByLength.getCoordinates().getZ() 
+                		+ " GENERATED");
                 
                 availableCornerPoints.add(generatedByLength);
                 points.add(generatedByLength);
@@ -324,18 +340,28 @@ public class AnxietatemAlgorithm {
             if (cornerPoint.getBox().getDimensions().getHeight() < box.getDimensions().getHeight()) {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY() + cornerPoint.getBox().getDimensions().getHeight(), cornerPoint.getCoordinates().getZ());
                 
-                CornerPoint generatedByHeight = new CornerPoint(coordinate);
+                var generatedByHeight = new CornerPoint(coordinate);
                 generatedByHeight.setBox(box);
                 
-                System.out.println("Point with coordinates: " + generatedByHeight.getCoordinates().getX() + "," + generatedByHeight.getCoordinates().getY() + "," + generatedByHeight.getCoordinates().getZ() + " GENERATED");
+                System.out.println("Point with coordinates: " 
+                		+ generatedByHeight.getCoordinates().getX() + "," 
+                		+ generatedByHeight.getCoordinates().getY() + "," 
+                		+ generatedByHeight.getCoordinates().getZ() 
+                		+ " GENERATED");
                 
                 availableCornerPoints.add(generatedByHeight);
                 points.add(generatedByHeight);
             } else {
                 coordinate = new Coordinates(cornerPoint.getCoordinates().getX(), cornerPoint.getCoordinates().getY() + box.getDimensions().getHeight(), cornerPoint.getCoordinates().getZ());
-                CornerPoint generatedByHeight = new CornerPoint(coordinate);
+                var generatedByHeight = new CornerPoint(coordinate);
                 generatedByHeight.setBox(box);
-                System.out.println("Point with coordinates: " + generatedByHeight.getCoordinates().getX() + "," + generatedByHeight.getCoordinates().getY() + "," + generatedByHeight.getCoordinates().getZ() + " GENERATED");
+                
+                System.out.println("Point with coordinates: " 
+                		+ generatedByHeight.getCoordinates().getX() + "," 
+                		+ generatedByHeight.getCoordinates().getY() + "," 
+                		+ generatedByHeight.getCoordinates().getZ() 
+                		+ " GENERATED");
+                
                 availableCornerPoints.add(generatedByHeight);
                 points.add(generatedByHeight);
             }
@@ -343,7 +369,7 @@ public class AnxietatemAlgorithm {
 
         System.out.println("Size of available points array before garbage: " + availableCornerPoints.size());
 
-        GarbagePoint garbagePoint = new GarbagePoint();
+        var garbagePoint = new GarbagePoint();
         availableCornerPoints = garbagePoint.collect(points, availableCornerPoints);
 
         System.out.println("Size of available points array after garbage: " + availableCornerPoints.size());

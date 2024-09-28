@@ -2,7 +2,7 @@ package com.codejukebox.optipackroute.core.algorithms.binpacking.anxietatem;
 
 import java.util.ArrayList;
 
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.CornerPoint;
+import com.codejukebox.optipackroute.domain.models.binpacking.CornerPoint;
 
 /**
  * Class responsible for cleaning up duplicate or redundant corner points.
