@@ -24,19 +24,19 @@ public class RouteCalculationController {
 
     @PostMapping("/floyd-warshall")
     public ResponseEntity<FloydWarshallResponse> runFloydWarshallAlgorithm(@RequestBody FloydWarshallRequest request) {
-        FloydWarshallResponse response = aStarService.calculateOptimalPath(request);
+        var response = aStarService.calculateOptimalPath(request);
         return ResponseEntity.ok(response);
     }
     
     @PostMapping("/dijkstra")
     public ResponseEntity<DijkstraResponse> runDijkstraAlgorithm(@RequestBody DijkstraRequest request) {
-        DijkstraResponse response = aStarService.calculateOptimalPath(request);
+        var response = aStarService.calculateOptimalPath(request);
         return ResponseEntity.ok(response);
     }
     
     @PostMapping("/a-star")
     public ResponseEntity<AStarResponse> runAStarAlgorithm(@RequestBody AStarRequest request) {
-        AStarResponse response = aStarService.calculateShortestPath(request);
+        var response = aStarService.calculateShortestPath(request);
         return ResponseEntity.ok(response);
     }
 }

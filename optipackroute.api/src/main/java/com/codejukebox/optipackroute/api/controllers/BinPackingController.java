@@ -17,25 +17,25 @@ public class BinPackingController {
 
     @PostMapping("/bottom-left-back")
     public ResponseEntity<PackingResultDTO> packBottomLeftBack(@RequestBody ContainerDTO containerDTO) {
-        PackingResultDTO result = binPackingService.packUsingBottomLeftBack(containerDTO);
+        var result = binPackingService.packUsingBottomLeftBack(containerDTO);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/best-fit-decreasing-height")
     public ResponseEntity<PackingResultDTO> packBestFitDecreasingHeight(@RequestBody ContainerDTO containerDTO) {
-        PackingResultDTO result = binPackingService.packUsingBestFitDecreasingHeight(containerDTO);
+        var result = binPackingService.packUsingBestFitDecreasingHeight(containerDTO);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/guillotine-split")
     public ResponseEntity<PackingResultDTO> packGuillotineSplit(@RequestBody ContainerDTO containerDTO) {
-        PackingResultDTO result = binPackingService.packUsingGuillotineSplit(containerDTO);
+        var result = binPackingService.packUsingGuillotineSplit(containerDTO);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/extreme-point-based-afit")
     public ResponseEntity<PackingResultDTO> packExtremePointBasedAFIT(@RequestBody ContainerDTO containerDTO) {
-        PackingResultDTO result = binPackingService.packUsingExtremePointBasedAFIT(containerDTO);
+        var result = binPackingService.packUsingExtremePointBasedAFIT(containerDTO);
         return ResponseEntity.ok(result);
     }
 }
