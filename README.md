@@ -235,31 +235,66 @@ com.codejukebox.optipackroute
 
 ![image](https://github.com/user-attachments/assets/700b8e1f-d1e1-4767-bccb-fa0ac5c786ea)
 
-
-## Como Baixar e Executar o Projeto
+## Como Rodar a Aplicação
+Para executar a aplicação OptiPackRoute, siga os passos detalhados abaixo. Esta aplicação é uma API RESTful que realiza simulações de rotas e distribuição de carga em contêineres, armazenando temporariamente os resultados em uma base de dados MongoDB enquanto os algoritmos estão em execução. A execução deve ser feita a partir da camada optipackroute.api.
 
 ### Pré-requisitos
-* JDK 21 ou superior
-* Maven
 
-### Passo a Passo
+Antes de iniciar a aplicação, verifique se você possui os seguintes pré-requisitos:
 
-##### 1. Clone o repositório:
+1. **Java Development Kit (JDK) 17 ou superior**: Certifique-se de que o JDK está instalado e configurado corretamente. Você pode verificar a instalação executando o comando:
+
 ```bash
-git clone https://github.com/seu-repositorio/optipackroute.git
+java -version
 ```
-#### 2. Navegue até a pasta do projeto:
+
+2. **Maven**: O Maven deve estar instalado para gerenciar as dependências do projeto. Verifique a instalação com:
+
+```
+mvn -version
+```
+
+3. **MongoDB**: Uma instância do MongoDB deve estar em execução. Você pode instalar o MongoDB localmente ou usar um serviço de MongoDB na nuvem. Certifique-se de que a instância está acessível e configurada corretamente.
+
+### Configuração da Base de Dados
+
+1. Crie um banco de dados no MongoDB:
+
+Conecte-se ao MongoDB usando o cliente de sua escolha (MongoDB Compass, Robo 3T, terminal).
+Crie um banco de dados chamado OptiPackRoute.
+
+2. Configuração de Conexão:
+
+No arquivo de configuração da aplicação (application.properties ou application.yml), configure a string de conexão com o MongoDB:
+
+```
+spring.data.mongodb.uri=mongodb://<username>:<password>@localhost:27017/OptiPackRoute
+```
+
+### Passo a Passo para Rodar a Aplicação
+
+1. **Clone o repositório**: Clone o repositório da aplicação em sua máquina local usando o seguinte comando:
 ```bash
-cd optipackroute
+git clone https://github.com/sandromendes/optipackroute.git
 ```
-#### 3. Compile e instale as dependências:
+
+2. **Navegue até a camada da API**: Acesse a pasta do projeto e navegue até a camada optipackroute.api:
+```bash
+cd optipackroute/optipackroute.api
+```
+
+3. **Compile o projeto**: Execute o comando abaixo para compilar o projeto e resolver todas as dependências:
 ```bash
 mvn clean install
 ```
-#### 4. Execute o projeto:
+
+4. **Execute a aplicação**: Após a compilação bem-sucedida, você pode rodar a aplicação usando o Maven com o seguinte comando:
 ```bash
 mvn spring-boot:run
 ```
+
+Este comando iniciará a aplicação, que por padrão estará disponível em http://localhost:8080.
+
 #### 5. Acesse o Swagger para visualizar e testar os endpoints:
 ```
 http://localhost:8080/swagger-ui.html
