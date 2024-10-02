@@ -146,8 +146,7 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *  	FloydWarshallEnhancedV0 floydWarshall = new FloydWarshallEnhancedV0(matrix);
 	 *  </pre>
 	 */
-	public FloydWarshallAlgorithmEnhanced(int[][] originalMatrix) {
-
+	public FloydWarshallAlgorithmEnhanced(int[][] originalMatrix) {		
 		if (originalMatrix == null || originalMatrix.length == 0 || originalMatrix[0].length == 0) {
 			throw new IllegalArgumentException(
 					"Invalid adjacency matrix: it must be non-null and have valid dimensions.");

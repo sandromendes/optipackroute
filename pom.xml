@@ -1,126 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.codejukebox</groupId>
-	<artifactId>optipackroute</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>optipackroute</name>
-	<description>Focused in solve classic route and load problems</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>21</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	    <!-- JUnit 5 -->
-	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter-api</artifactId>
-	        <version>5.8.2</version>
-	        <scope>test</scope>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter-engine</artifactId>
-	        <version>5.8.2</version>
-	        <scope>test</scope>
-	    </dependency>
-	
-	    <!-- Mockito for mocking -->
-	    <dependency>
-	        <groupId>org.mockito</groupId>
-	        <artifactId>mockito-core</artifactId>
-	        <version>4.5.1</version>
-	        <scope>test</scope>
-	    </dependency>
-	
-	    <!-- Spring Test -->
-	    <dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-test</artifactId>
-	        <version>5.3.22</version>
-	        <scope>test</scope>
-	    </dependency>
-	</dependencies>
+    <!-- Specifies the version of the POM (Project Object Model) model used -->
+    <modelVersion>4.0.0</modelVersion>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <!-- The parent POM from which this project inherits configurations, here it's the Spring Boot starter parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath /> <!-- Allows Maven to find the parent from repository instead of relative path -->
+    </parent>
 
-	<modules>
-		<module>optipackroute.core</module>
-		<module>optipackroute.application</module>
-		<module>optipackroute.domain</module>
-		<module>optipackroute.api</module>
-	</modules>
+    <!-- The group ID uniquely identifies the project across all projects -->
+    <groupId>com.codejukebox</groupId>
+
+    <!-- The unique identifier for this project, representing this POM file -->
+    <artifactId>optipackroute.parent</artifactId>
+
+    <!-- The current version of the project; "SNAPSHOT" indicates an in-progress version -->
+    <version>0.0.1-SNAPSHOT</version>
+
+    <!-- Defines the type of project packaging. "pom" means this is a parent project with no direct output (e.g., no JAR) -->
+    <packaging>pom</packaging>
+
+    <!-- The human-readable name of the project -->
+    <name>optipackroute</name>
+
+    <!-- A brief description of what the project does -->
+    <description>Focused in solve classic route and load problems</description>
+
+    <!-- Lists all the modules (sub-projects) that are part of this parent project -->
+    <modules>
+        <module>optipackroute.core</module>
+        <module>optipackroute.application</module>
+        <module>optipackroute.domain</module>
+        <module>optipackroute.api</module>
+    </modules>
+
+    <!-- Manages dependency versions across all modules to maintain consistency -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SLF4J is a logging API that acts as an abstraction for various logging frameworks -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.7</version>
+            </dependency>
+
+            <!-- Spring Boot Web Starter: Provides the foundation for building web applications -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
+
+            <!-- Spring Boot Security Starter: Adds authentication and authorization capabilities -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+
+            <!-- Spring Boot DevTools: Adds utilities for easier development, such as automatic reload -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <scope>runtime</scope> <!-- Only used during runtime, not during testing or compiling -->
+                <optional>true</optional> <!-- Marks the dependency as optional, not mandatory for others -->
+            </dependency>
+
+            <!-- Spring Context: Provides core support for annotations such as @Service, @Component, etc. -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.1.13</version>
+            </dependency>
+
+            <!-- Spring Boot Starter Test: Includes testing tools and dependencies for testing Spring Boot applications -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope> <!-- Only used during test phases -->
+            </dependency>
+
+            <!-- Spring Security Test: Adds utilities for testing security features in Spring Security applications -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <scope>test</scope> <!-- Only used during test phases -->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>

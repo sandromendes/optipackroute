@@ -1,32 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.codejukebox</groupId>
-    <artifactId>optipackroute</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  
-  <packaging>jar</packaging>
-  
-  <groupId>com.codejukebox</groupId>
-  <artifactId>optipackroute.core</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  	<build>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.springframework.boot</groupId>
-	            <artifactId>spring-boot-maven-plugin</artifactId>
-	        </plugin>
-	    </plugins>
-	</build>
-	
+
+	<!-- The model version for the POM -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Inherit configuration from the parent POM, 'optipackroute.parent' -->
+	<parent>
+		<groupId>com.codejukebox</groupId>
+		<artifactId>optipackroute.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<!-- The artifact's unique identifier within the group -->
+	<artifactId>optipackroute.core</artifactId>
+
+	<!-- Project's name and description for clarity -->
+	<name>optipackroute.core</name>
+	<description>Core layer of the project</description>
+
+	<!-- Define the packaging type, which is 'jar' in this case -->
+	<packaging>jar</packaging>
+
+	<!-- Set of properties used across the project, defining Java version -->
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+
+	<!-- Project dependencies -->
 	<dependencies>
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.domain</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>
+		<!-- Logging dependencies for Log4j and SLF4J -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+		</dependency>
+
+		<!-- JUnit dependency for unit testing, only for test scope -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Dependency for the domain layer of the project -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
+
 </project>

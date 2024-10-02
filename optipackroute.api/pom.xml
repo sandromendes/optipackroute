@@ -1,94 +1,117 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- The model version for the POM -->
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Inherit configuration from the parent POM, 'optipackroute.parent' -->
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.codejukebox</groupId>
+		<artifactId>optipackroute.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.codejukebox</groupId>
+
+	<!-- Artifact's unique identifier and description -->
 	<artifactId>optipackroute.api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>optipackroute.api</name>
-	<description>Focused in solve classic route and load problems</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>Focused on solving classic route and load problems</description>
+
+	<!-- Define Java version used in the project -->
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
+	<!-- Project dependencies -->
 	<dependencies>
+
+		<!-- Spring Security starter for authentication and authorization -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<version>3.3.4</version>
 		</dependency>
+
+		<!-- Spring Web starter for building web applications -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.3.4</version>
 		</dependency>
 
+		<!-- Spring Boot DevTools for development tools and hot swapping -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.3.4</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Lombok to reduce boilerplate code -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Spring Boot test starter for testing purposes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>3.3.4</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring Security test tools -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<version>6.3.3</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- SpringDoc OpenAPI starter for generating API documentation -->
 		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.3.0</version>
-		</dependency>		
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.core</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>		
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.domain</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.application</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>		    		
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
+		<!-- Project-specific dependencies for different layers -->
+		<!-- Domain layer dependency -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Core layer dependency -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Application layer dependency -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.application</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
+	<!-- Build configuration -->
 	<build>
 		<plugins>
+			<!-- Spring Boot Maven plugin for building and running Spring Boot applications -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
+						<!-- Exclude Lombok from the build process -->
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>

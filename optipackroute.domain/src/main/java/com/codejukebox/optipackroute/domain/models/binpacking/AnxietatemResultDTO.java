@@ -2,34 +2,33 @@ package com.codejukebox.optipackroute.domain.models.binpacking;
 
 import java.util.List;
 
-public class PackingResultDTO {
-    
-	private List<PackedBoxDTO> packedBoxes;
+public class AnxietatemResultDTO {
+	private List<CornerPoint> usedCornerPoints;
 	private int numberOfPackedBoxes;
     private int containerLength;
     private int containerHeight;
     private int containerWidth;
     
-    public PackingResultDTO() {
+    public AnxietatemResultDTO() {
 		super();
 	}
 
-	public PackingResultDTO(List<PackedBoxDTO> packedBoxes, int numberOfPackedBoxes,
+	public AnxietatemResultDTO(List<CornerPoint> usedCornerPoints, int numberOfPackedBoxes,
 			int containerLength, int containerHeight, int containerWidth) {
 		super();
-		this.packedBoxes = packedBoxes;
+		this.usedCornerPoints = usedCornerPoints;
 		this.numberOfPackedBoxes = numberOfPackedBoxes;
 		this.containerLength = containerLength;
 		this.containerHeight = containerHeight;
 		this.containerWidth = containerWidth;
 	}
 
-	public List<PackedBoxDTO> getPackedBoxes() {
-		return packedBoxes;
+	public List<CornerPoint> getUsedCornerPoints() {
+		return usedCornerPoints;
 	}
 
-	public void setPackedBoxes(List<PackedBoxDTO> packedBoxes) {
-		this.packedBoxes = packedBoxes;
+	public void setUsedCornerPoints(List<CornerPoint> usedCornerPoints) {
+		this.usedCornerPoints = usedCornerPoints;
 	}
 	
 	public int getNumberOfPackedBoxes() {
@@ -64,4 +63,3 @@ public class PackingResultDTO {
 		this.containerWidth = containerWidth;
 	}
 }
-

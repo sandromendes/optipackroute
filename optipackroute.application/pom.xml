@@ -1,37 +1,48 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.codejukebox</groupId>
-    <artifactId>optipackroute</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  
-  <packaging>jar</packaging>
-    
-  <groupId>com.codejukebox</groupId>  
-  <artifactId>optipackroute.application</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
 
-  	<build>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.springframework.boot</groupId>
-	            <artifactId>spring-boot-maven-plugin</artifactId>
-	        </plugin>
-	    </plugins>
-	</build>
-	
+	<!-- The model version for the POM -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Inherit configuration from the parent POM, 'optipackroute.parent' -->
+	<parent>
+		<groupId>com.codejukebox</groupId>
+		<artifactId>optipackroute.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<!-- Define the packaging type, which is 'jar' in this case -->
+	<packaging>jar</packaging>
+
+	<!-- The artifact's unique identifier within the group -->
+	<artifactId>optipackroute.application</artifactId>
+
+	<!-- Project's name and description for clarity -->
+	<name>optipackroute.application</name>
+	<description>Core layer of the project</description>
+
+	<!-- Project dependencies -->
 	<dependencies>
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.core</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>		
-	    <dependency>
-		    <groupId>com.codejukebox</groupId>
-		    <artifactId>optipackroute.domain</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-	    </dependency>
-	</dependencies>  
+		<!-- Spring Framework context dependency for application context functionality -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<!-- Dependency for the domain layer of the project -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Dependency for the core layer of the project -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
 </project>
