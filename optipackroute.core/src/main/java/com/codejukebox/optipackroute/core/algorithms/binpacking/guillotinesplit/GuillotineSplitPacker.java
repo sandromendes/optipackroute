@@ -3,11 +3,11 @@ package com.codejukebox.optipackroute.core.algorithms.binpacking.guillotinesplit
 import java.util.ArrayList;
 import java.util.List;
 
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Box;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackedBox;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackingResult;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Space;
 import com.codejukebox.optipackroute.core.algorithms.binpacking.interfaces.IBinPackingAlgorithm;
+import com.codejukebox.optipackroute.domain.models.binpacking.Box;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackedBox;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackingResult;
+import com.codejukebox.optipackroute.domain.models.binpacking.Space;
 
 public class GuillotineSplitPacker implements IBinPackingAlgorithm {
 
@@ -41,11 +41,11 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
         availableBoxes.sort((a, b) -> Integer.compare(b.getVolume(), a.getVolume()));
 
         // Empacotar cada caixa
-        for (Box box : availableBoxes) {
+        for (var box : availableBoxes) {
             boolean packed = false;
 
             // Tentar empacotar a caixa em um dos espaços disponíveis
-            for (Space space : new ArrayList<>(availableSpaces)) {
+            for (var space : new ArrayList<>(availableSpaces)) {
                 if (fitsInSpace(box, space)) {
                     placeBox(box, space);
                     splitSpace(space, box);
@@ -66,7 +66,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
     
     @Override
     public void displayPackedBoxes() {
-        for (PackedBox box : packedBoxes) {
+        for (var box : packedBoxes) {
             System.out.println("Packed Box: " + box);
         }
     }
@@ -79,7 +79,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
 
     private void placeBox(Box box, Space space) {
         // Criar um objeto PackedBox contendo a posição e dimensões da caixa
-        PackedBox packedBox = new PackedBox(box, space.getX(), space.getY(), space.getZ());
+        var packedBox = new PackedBox(box, space.getX(), space.getY(), space.getZ());
         packedBoxes.add(packedBox);
         System.out.println("Packed " + box + " at position (" + space.getX() + ", " + space.getY() + ", " + space.getZ() + ")");
     }

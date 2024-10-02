@@ -146,8 +146,7 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *  	FloydWarshallEnhancedV0 floydWarshall = new FloydWarshallEnhancedV0(matrix);
 	 *  </pre>
 	 */
-	public FloydWarshallAlgorithmEnhanced(int[][] originalMatrix) {
-
+	public FloydWarshallAlgorithmEnhanced(int[][] originalMatrix) {		
 		if (originalMatrix == null || originalMatrix.length == 0 || originalMatrix[0].length == 0) {
 			throw new IllegalArgumentException(
 					"Invalid adjacency matrix: it must be non-null and have valid dimensions.");
@@ -322,7 +321,7 @@ public class FloydWarshallAlgorithmEnhanced {
 	    long startTime = System.nanoTime();
 		
 		// Initialize variables
-		PermutationGenerator generator = new PermutationGenerator(elements.size());
+		var generator = new PermutationGenerator(elements.size());
 		int[] indices;
 		int cost = 0;
 		int partialCost;
@@ -339,7 +338,7 @@ public class FloydWarshallAlgorithmEnhanced {
 			indices = generator.getNext();
 			
 			key++;
-			List<PathCost> paths = new ArrayList<PathCost>();
+			var paths = new ArrayList<PathCost>();
 			
 			for (int i = 0; i < indices.length - 1; i++) {		
 				cityPairs[i][0] = elements.get(indices[i]);
@@ -373,7 +372,7 @@ public class FloydWarshallAlgorithmEnhanced {
 
 		result.setSubPaths(iterations);
 		
-		List<Integer> optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
+		var optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
 		result.setPath(optimalPathList);
 		result.setTotalCost(minCost);
 		

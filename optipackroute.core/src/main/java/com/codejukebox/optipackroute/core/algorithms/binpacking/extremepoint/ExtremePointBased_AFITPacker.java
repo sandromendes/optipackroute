@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Box;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackedBox;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.PackingResult;
-import com.codejukebox.optipackroute.core.algorithms.binpacking.domain.Space;
 import com.codejukebox.optipackroute.core.algorithms.binpacking.interfaces.IBinPackingAlgorithm;
+import com.codejukebox.optipackroute.domain.models.binpacking.Box;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackedBox;
+import com.codejukebox.optipackroute.domain.models.binpacking.PackingResult;
+import com.codejukebox.optipackroute.domain.models.binpacking.Space;
 
 public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
     private int containerLength, containerHeight, containerDepth;
@@ -34,9 +34,9 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
     public PackingResult pack() {
     	availableBoxes.sort(Comparator.comparing(Box::getVolume).reversed());  // Ordena caixas por volume decrescente
 
-        for (Box box : availableBoxes) {
+        for (var box : availableBoxes) {
             boolean packed = false;
-            for (Space extremePoint : new ArrayList<>(extremePoints)) {
+            for (var extremePoint : new ArrayList<>(extremePoints)) {
                 if (canFit(box, extremePoint)) {
                     placeBox(box, extremePoint);
                     packed = true;
@@ -59,7 +59,7 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
     }
 
     private void placeBox(Box box, Space extremePoint) {
-        PackedBox packedBox = new PackedBox(box, extremePoint.getX(), extremePoint.getY(), extremePoint.getZ());
+        var packedBox = new PackedBox(box, extremePoint.getX(), extremePoint.getY(), extremePoint.getZ());
         packedBoxes.add(packedBox);
         System.out.println("Packed " + box + " at " + extremePoint);
 
@@ -94,7 +94,7 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
 
     @Override
     public void displayPackedBoxes() {
-        for (PackedBox packedBox : packedBoxes) {
+        for (var packedBox : packedBoxes) {
             System.out.println("Packed Box: " + packedBox.getBox() + " at position (" +
                 packedBox.getX() + ", " + packedBox.getY() + ", " + packedBox.getZ() + ")");
         }

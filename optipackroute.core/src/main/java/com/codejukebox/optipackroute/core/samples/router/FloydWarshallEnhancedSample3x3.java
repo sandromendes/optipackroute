@@ -21,18 +21,18 @@ public class FloydWarshallEnhancedSample3x3 extends FloydWarshallSampleBase{
 		        {1, 	INF, 	0}
 		    };
 
-		    FloydWarshallAlgorithmEnhanced floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
+		    var floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
 		    floydWarshall.runPreProcessor();
 
 		    // Node 1 is the start node, and we want to find the path to node 3
-		    ArrayList<Integer> nodes = new ArrayList<>();
+		    var nodes = new ArrayList<Integer>();
 		    nodes.add(1);
 		    nodes.add(2);
 		    nodes.add(3);
 
 		    floydWarshall.findOptimalConfiguration(nodes, nodes.get(0));
 
-	        FloydWarshallEnhancedResult result = floydWarshall.getResult();
+	        var result = floydWarshall.getResult();
 
 	        printResult(result, false);
     }

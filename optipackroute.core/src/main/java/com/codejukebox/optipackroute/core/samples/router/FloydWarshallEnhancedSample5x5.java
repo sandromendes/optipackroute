@@ -17,10 +17,10 @@ public class FloydWarshallEnhancedSample5x5 extends FloydWarshallSampleBase {
     private static void runFloydWarshallEnhanced(){        
         int[][] matrix = getSourceMatrix();
         
-        FloydWarshallAlgorithmEnhanced floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
+        var floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
         floydWarshall.runPreProcessor();
 
-        ArrayList<Integer> nodes = new ArrayList<>();
+        var nodes = new ArrayList<Integer>();
         nodes.add(1);
         nodes.add(4); // Initial node
         nodes.add(2);
@@ -28,7 +28,7 @@ public class FloydWarshallEnhancedSample5x5 extends FloydWarshallSampleBase {
         
         floydWarshall.findOptimalConfiguration(nodes, nodes.get(2));
         
-        FloydWarshallEnhancedResult result = floydWarshall.getResult();
+        var result = floydWarshall.getResult();
 
         printResult(result, false);
     }

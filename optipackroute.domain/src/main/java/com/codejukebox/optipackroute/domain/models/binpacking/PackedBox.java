@@ -1,4 +1,4 @@
-package com.codejukebox.optipackroute.core.algorithms.binpacking.domain;
+package com.codejukebox.optipackroute.domain.models.binpacking;
 
 public class PackedBox {
     private Box box;

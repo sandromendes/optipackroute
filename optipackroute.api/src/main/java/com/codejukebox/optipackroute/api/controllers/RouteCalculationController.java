@@ -1,6 +1,9 @@
 package com.codejukebox.optipackroute.api.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,25 +22,49 @@ import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallRe
 @RequestMapping("/api/v1/shortest-path/")
 public class RouteCalculationController {
 
+    private static final Logger logger = LoggerFactory.getLogger(RouteCalculationController.class);
+
     @Autowired
     private RouteCalculationService aStarService;
 
     @PostMapping("/floyd-warshall")
     public ResponseEntity<FloydWarshallResponse> runFloydWarshallAlgorithm(@RequestBody FloydWarshallRequest request) {
-        FloydWarshallResponse response = aStarService.calculateOptimalPath(request);
-        return ResponseEntity.ok(response);
+        logger.info("Starting Floyd-Warshall algorithm with request: {}", request);
+        try {
+            var response = aStarService.calculateOptimalPath(request);
+            logger.info("Floyd-Warshall algorithm completed successfully: {}", response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error during Floyd-Warshall algorithm: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-    
+
     @PostMapping("/dijkstra")
     public ResponseEntity<DijkstraResponse> runDijkstraAlgorithm(@RequestBody DijkstraRequest request) {
-        DijkstraResponse response = aStarService.calculateOptimalPath(request);
-        return ResponseEntity.ok(response);
+        logger.info("Starting Dijkstra algorithm with request: {}", request);
+        try {
+            var response = aStarService.calculateOptimalPath(request);
+            logger.info("Dijkstra algorithm completed successfully: {}", response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error during Dijkstra algorithm: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-    
+
     @PostMapping("/a-star")
     public ResponseEntity<AStarResponse> runAStarAlgorithm(@RequestBody AStarRequest request) {
-        AStarResponse response = aStarService.calculateShortestPath(request);
-        return ResponseEntity.ok(response);
+        logger.info("Starting A* algorithm with request: {}", request);
+        try {
+            var response = aStarService.calculateShortestPath(request);
+            logger.info("A* algorithm completed successfully: {}", response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error during A* algorithm: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
+
 

@@ -66,7 +66,7 @@ public class PermutationGenerator {
   //------------------
 
   private static BigInteger getFactorial (int n) {
-    BigInteger fact = BigInteger.ONE;
+    var fact = BigInteger.ONE;
     for (int i = n; i > 1; i--) {
       fact = fact.multiply (new BigInteger (Integer.toString (i)));
     }

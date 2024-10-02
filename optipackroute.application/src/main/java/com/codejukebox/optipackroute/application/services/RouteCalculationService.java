@@ -1,8 +1,9 @@
 package com.codejukebox.optipackroute.application.services;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.codejukebox.optipackroute.core.algorithms.router.astar.AStarAlgorithm;
@@ -10,56 +11,73 @@ import com.codejukebox.optipackroute.core.algorithms.router.dijkstra.DijkstraAlg
 import com.codejukebox.optipackroute.core.algorithms.router.floydwarshall.FloydWarshallAlgorithmEnhanced;
 import com.codejukebox.optipackroute.domain.models.astar.AStarRequest;
 import com.codejukebox.optipackroute.domain.models.astar.AStarResponse;
-import com.codejukebox.optipackroute.domain.models.astar.AStarResult;
 import com.codejukebox.optipackroute.domain.models.dijkstra.DijkstraRequest;
 import com.codejukebox.optipackroute.domain.models.dijkstra.DijkstraResponse;
-import com.codejukebox.optipackroute.domain.models.dijkstra.DijkstraResult;
-import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallEnhancedResult;
 import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallRequest;
 import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallResponse;
 
 @Service
 public class RouteCalculationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RouteCalculationService.class);
+
     public DijkstraResponse calculateOptimalPath(DijkstraRequest request) {
-        int[][] matrix = request.getMatrix();
-        int startNode = request.getStartNode();
+        logger.info("Starting Dijkstra algorithm with request: {}", request);
+        try {
+            int[][] matrix = request.getMatrix();
+            int startNode = request.getStartNode();
 
-        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm();
-        DijkstraResult result = dijkstraAlgorithm.findShortestPaths(matrix, startNode);
+            var dijkstraAlgorithm = new DijkstraAlgorithm();
+            var result = dijkstraAlgorithm.findShortestPaths(matrix, startNode);
 
-        return new DijkstraResponse(result.getDistances(), result.getPredecessors());
+            logger.info("Dijkstra algorithm completed successfully.");
+            return new DijkstraResponse(result.getDistances(), result.getPredecessors());
+        } catch (Exception e) {
+            logger.error("Error during Dijkstra algorithm: {}", e.getMessage(), e);
+            throw new RuntimeException("Path calculation failed: " + e.getMessage(), e);
+        }
     }
-	
+
     public AStarResponse calculateShortestPath(AStarRequest request) {
-        AStarAlgorithm algorithm = new AStarAlgorithm();
-        AStarResult result = algorithm.findShortestPath(request.getMatrix(), request.getStartNode(), request.getGoalNode());
+        logger.info("Starting A* algorithm with request: {}", request);
+        try {
+            var algorithm = new AStarAlgorithm();
+            var result = algorithm.findShortestPath(request.getMatrix(), request.getStartNode(), request.getGoalNode());
 
-        return new AStarResponse(result.getPath(), result.getTotalCost());
+            logger.info("A* algorithm completed successfully.");
+            return new AStarResponse(result.getPath(), result.getTotalCost());
+        } catch (Exception e) {
+            logger.error("Error during A* algorithm: {}", e.getMessage(), e);
+            throw new RuntimeException("Path calculation failed: " + e.getMessage(), e);
+        }
     }
-    
+
     public FloydWarshallResponse calculateOptimalPath(FloydWarshallRequest request) {
-        int[][] matrix = request.getMatrix();
-        List<Integer> nodes = request.getNodes();
-        int initialNode = request.getInitialNode();
+        logger.info("Starting Floyd-Warshall algorithm with request: {}", request);
+        try {
+            int[][] matrix = request.getMatrix();
+            var nodes = request.getNodes();
+            int initialNode = request.getInitialNode();
 
-        FloydWarshallAlgorithmEnhanced floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
-        floydWarshall.runPreProcessor();
+            var floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
+            floydWarshall.runPreProcessor();
 
-        // Converte a lista de inteiros para um ArrayList
-        ArrayList<Integer> nodesList = new ArrayList<>(nodes);
-        floydWarshall.findOptimalConfiguration(nodesList, initialNode);
+            var nodesList = new ArrayList<>(nodes);
+            floydWarshall.findOptimalConfiguration(nodesList, initialNode);
 
-        // Obtém o resultado
-        FloydWarshallEnhancedResult result = floydWarshall.getResult();
+            var result = floydWarshall.getResult();
 
-        // Cria a resposta com o resultado do algoritmo
-        return new FloydWarshallResponse(
-                result.getPath(),
-                result.getTotalCost(),
-                result.getDistanceMatrix(),
-                result.getPredecessorMatrix(),
-                result.getSubPaths()
-        );
+            logger.info("Floyd-Warshall algorithm completed successfully.");
+            return new FloydWarshallResponse(
+                    result.getPath(),
+                    result.getTotalCost(),
+                    result.getDistanceMatrix(),
+                    result.getPredecessorMatrix(),
+                    result.getSubPaths()
+            );
+        } catch (Exception e) {
+            logger.error("Error during Floyd-Warshall algorithm: {}", e.getMessage(), e);
+            throw new RuntimeException("Path calculation failed: " + e.getMessage(), e);
+        }
     }
 }
