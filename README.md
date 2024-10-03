@@ -226,9 +226,15 @@ com.codejukebox.optipackroute
 └── OptiPackRouteApplication.java
 ```
 
-![image](https://github.com/user-attachments/assets/2a1d16c0-cb40-4f72-8a7c-198cc054c2ba)
+O projeto OptiPackRoute é dividido em módulos para garantir uma arquitetura limpa e organizada. A **API** gerencia as interações externas via endpoints REST, enquanto o **Application** orquestra os casos de uso, coordenando a execução dos algoritmos de rota e empacotamento. Os módulos **Core** e **Domain** concentram a lógica dos algoritmos e entidades de negócio, enquanto o **Persistence** gerencia a persistência dos resultados e simulações.
+
+![image](https://github.com/user-attachments/assets/df8158b7-23ac-4fcf-8455-6329c3786d99)
 
 
+Os componentes do projeto OptiPackRoute desempenham papéis fundamentais na organização da lógica de negócio. O **Controller** gerencia as requisições HTTP, encaminhando-as para o **Service**, que orquestra a lógica de aplicação e interage com os **Algorithms** para calcular rotas e empacotamento. O **Domain** (Model) define as entidades e regras de negócio, enquanto o **Repository** cuida da persistência dos dados e do acesso ao banco de dados.
+
+
+![image](https://github.com/user-attachments/assets/93f20446-3ea0-4382-a757-34222da23542)
 
 
 ## Endpoints Disponíveis
@@ -236,7 +242,7 @@ com.codejukebox.optipackroute
 ![image](https://github.com/user-attachments/assets/700b8e1f-d1e1-4767-bccb-fa0ac5c786ea)
 
 ## Como Rodar a Aplicação
-Para executar a aplicação OptiPackRoute, siga os passos detalhados abaixo. Esta aplicação é uma API RESTful que realiza simulações de rotas e distribuição de carga em contêineres, armazenando temporariamente os resultados em uma base de dados MongoDB enquanto os algoritmos estão em execução. A execução deve ser feita a partir da camada optipackroute.api.
+Para executar a aplicação **OptiPackRoute**, siga os passos detalhados abaixo. Esta aplicação é uma **API RESTful** que realiza simulações de rotas e distribuição de carga em contêineres, armazenando temporariamente os resultados em uma base de dados **Redis** enquanto os algoritmos estão em execução. A execução deve ser feita a partir da camada optipackroute.api.
 
 ### Pré-requisitos
 
@@ -254,21 +260,25 @@ java -version
 mvn -version
 ```
 
-3. **MongoDB**: Uma instância do MongoDB deve estar em execução. Você pode instalar o MongoDB localmente ou usar um serviço de MongoDB na nuvem. Certifique-se de que a instância está acessível e configurada corretamente.
+3. **Redis**: 
 
-### Configuração da Base de Dados
+Para o correto funcionamento do projeto OptiPackRoute, é necessário ter previamente o banco de dados Redis configurado. O Redis será utilizado para o armazenamento de cache e outras funcionalidades relacionadas ao desempenho da aplicação, garantindo respostas rápidas e eficientes durante a execução dos algoritmos de roteamento e empacotamento.
 
-1. Crie um banco de dados no MongoDB:
+**Configuração do Redis**
 
-Conecte-se ao MongoDB usando o cliente de sua escolha (MongoDB Compass, Robo 3T, terminal).
-Crie um banco de dados chamado OptiPackRoute.
+Para que o projeto **OptiPackRoute** funcione corretamente, é necessário configurar o banco de dados **Redis**, que será usado para caching e otimização do desempenho. 
 
-2. Configuração de Conexão:
+Após instalar o Redis, é necessário configurar a base de dados chamada **optipackroute-dbcache**. Por padrão, o Redis utiliza a DB 0. Se necessário, você pode modificar o banco de dados para uma DB específica no arquivo de configuração do Redis (redis.conf) ou através das configurações de Spring Boot.
 
-No arquivo de configuração da aplicação (application.properties ou application.yml), configure a string de conexão com o MongoDB:
+Para manter a DB 0, você pode seguir a configuração padrão.
 
-```
-spring.data.mongodb.uri=mongodb://<username>:<password>@localhost:27017/OptiPackRoute
+Certifique-se de que as seguintes propriedades estão configuradas no arquivo application.properties:
+
+```json
+# Configuração do Redis
+spring.redis.host=localhost
+spring.redis.port=6379
+spring.redis.database=0  # ou a DB configurada
 ```
 
 ### Passo a Passo para Rodar a Aplicação
@@ -283,14 +293,25 @@ git clone https://github.com/sandromendes/optipackroute.git
 cd optipackroute/optipackroute.api
 ```
 
-3. **Compile o projeto**: Execute o comando abaixo para compilar o projeto e resolver todas as dependências:
+3. **Compile o projeto**: Execute o comando abaixo, na raiz do projeto, para compilar e resolver todas as dependências:
 ```bash
 mvn clean install
 ```
 
-4. **Execute a aplicação**: Após a compilação bem-sucedida, você pode rodar a aplicação usando o Maven com o seguinte comando:
+4. **Execute a aplicação**: Após a compilação bem-sucedida, entre no diretório optipackroute.api, para rodar a aplicação usando o Maven:
+
+```bash
+cd optipackroute.api
+```
+
 ```bash
 mvn spring-boot:run
+```
+
+Ou, na raiz da aplicação, digite o comando:
+
+```bash
+mvn -pl optipackroute.api spring-boot:run
 ```
 
 Este comando iniciará a aplicação, que por padrão estará disponível em http://localhost:8080.
