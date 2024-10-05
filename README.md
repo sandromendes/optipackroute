@@ -236,11 +236,6 @@ Os componentes do projeto OptiPackRoute desempenham papéis fundamentais na orga
 
 ![image](https://github.com/user-attachments/assets/93f20446-3ea0-4382-a757-34222da23542)
 
-
-## Endpoints Disponíveis
-
-![image](https://github.com/user-attachments/assets/700b8e1f-d1e1-4767-bccb-fa0ac5c786ea)
-
 ## Como Rodar a Aplicação
 Para executar a aplicação **OptiPackRoute**, siga os passos detalhados abaixo. Esta aplicação é uma **API RESTful** que realiza simulações de rotas e distribuição de carga em contêineres, armazenando temporariamente os resultados em uma base de dados **Redis** enquanto os algoritmos estão em execução. A execução deve ser feita a partir da camada optipackroute.api.
 
@@ -316,10 +311,15 @@ mvn -pl optipackroute.api spring-boot:run
 
 Este comando iniciará a aplicação, que por padrão estará disponível em http://localhost:8080.
 
-#### 5. Acesse o Swagger para visualizar e testar os endpoints:
+5. **Acesse o Swagger para visualizar e testar os endpoints**:
 ```
 http://localhost:8080/swagger-ui.html
 ```
+
+## Endpoints Disponíveis
+
+![image](https://github.com/user-attachments/assets/700b8e1f-d1e1-4767-bccb-fa0ac5c786ea)
+
 
 ## Autenticação
 Para autenticar-se corretamente e acessar os endpoints, use as seguintes credenciais:
