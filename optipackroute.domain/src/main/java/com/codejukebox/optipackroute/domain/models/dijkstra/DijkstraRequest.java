@@ -4,7 +4,11 @@ public class DijkstraRequest {
     private int[][] matrix;
     private int startNode;
 
-    public DijkstraRequest(int[][] matrix, int startNode) {
+    public DijkstraRequest() {
+		super();
+	}
+
+	public DijkstraRequest(int[][] matrix, int startNode) {
         this.matrix = matrix;
         this.startNode = startNode;
     }
