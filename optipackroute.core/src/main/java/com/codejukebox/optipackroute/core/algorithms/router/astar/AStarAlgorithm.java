@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 import com.codejukebox.optipackroute.domain.models.astar.AStarResult;
@@ -19,7 +18,7 @@ public class AStarAlgorithm {
         int[] fScores = new int[size];
         int[] predecessors = new int[size];
         boolean[] closedSet = new boolean[size];
-        PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(node -> fScores[node.index]));
+        var openSet = new PriorityQueue<Node>(Comparator.comparingInt(node -> fScores[node.index]));
 
         Arrays.fill(gScores, INF);
         Arrays.fill(fScores, INF);

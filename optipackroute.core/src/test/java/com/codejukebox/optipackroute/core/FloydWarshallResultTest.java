@@ -33,7 +33,7 @@ public class FloydWarshallResultTest {
     void testAddSingleSubPath() {
         // Test adding a single sub-path
         List<PathCost> pathList = new ArrayList<>();
-        pathList.add(new PathCost(1, 2, 10));
+        pathList.add(new PathCost(1, 2, (double)10));
         
         result.getSubPaths().put(1, pathList);
         
@@ -49,11 +49,11 @@ public class FloydWarshallResultTest {
     void testAddMultipleSubPaths() {
         // Test adding multiple sub-paths
         List<PathCost> pathList1 = new ArrayList<>();
-        pathList1.add(new PathCost(1, 2, 10));
-        pathList1.add(new PathCost(2, 3, 20));
+        pathList1.add(new PathCost(1, 2, (double)10));
+        pathList1.add(new PathCost(2, 3, (double)20));
         
         List<PathCost> pathList2 = new ArrayList<>();
-        pathList2.add(new PathCost(3, 4, 15));
+        pathList2.add(new PathCost(3, 4, (double)15));
         
         result.getSubPaths().put(1, pathList1);
         result.getSubPaths().put(2, pathList2);
@@ -77,7 +77,7 @@ public class FloydWarshallResultTest {
     void testZeroCostPath() {
         // Test a sub-path where the cost is zero
         List<PathCost> pathList = new ArrayList<>();
-        pathList.add(new PathCost(1, 1, 0)); // Cost is zero since it's the same city
+        pathList.add(new PathCost(1, 1, (double)0)); // Cost is zero since it's the same city
         
         result.getSubPaths().put(1, pathList);
         
@@ -89,19 +89,19 @@ public class FloydWarshallResultTest {
     void testLargeSubCost() {
         // Test a sub-path with large costs
         List<PathCost> pathList = new ArrayList<>();
-        pathList.add(new PathCost(1, 2, Integer.MAX_VALUE));
+        pathList.add(new PathCost(1, 2, (double)Integer.MAX_VALUE));
         
         result.getSubPaths().put(1, pathList);
         
         List<PathCost> retrievedPath = result.getSubPaths().get(1);
-        assertEquals(Integer.MAX_VALUE, retrievedPath.get(0).getSubCost(), "Cost should be Integer.MAX_VALUE.");
+        assertEquals((double)Integer.MAX_VALUE, retrievedPath.get(0).getSubCost(), "Cost should be Integer.MAX_VALUE.");
     }
 
     @Test
     void testNegativeCost() {
         // Test a sub-path with negative costs
         List<PathCost> pathList = new ArrayList<>();
-        pathList.add(new PathCost(1, 2, -5));
+        pathList.add(new PathCost(1, 2, (double)-5));
         
         result.getSubPaths().put(1, pathList);
         
@@ -113,8 +113,8 @@ public class FloydWarshallResultTest {
     void testPrintSubPaths() {
         // Test printSubPaths method by checking console output
         List<PathCost> pathList = new ArrayList<>();
-        pathList.add(new PathCost(1, 2, 10));
-        pathList.add(new PathCost(2, 3, 15));
+        pathList.add(new PathCost(1, 2, (double)10));
+        pathList.add(new PathCost(2, 3, (double)15));
         result.getSubPaths().put(1, pathList);
 
         // Call the method and visually verify the output for now

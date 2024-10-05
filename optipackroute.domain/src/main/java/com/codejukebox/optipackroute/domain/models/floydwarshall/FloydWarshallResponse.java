@@ -5,12 +5,16 @@ import java.util.List;
 
 public class FloydWarshallResponse {
     private List<Integer> optimalPath;
-    private int totalCost;
-    private int[][] distanceMatrix;
-    private int[][] predecessorMatrix;
+    private double totalCost;
+    private double[][] distanceMatrix;
+    private double[][] predecessorMatrix;
     private HashMap<Integer, List<PathCost>> subPaths;
 
-    public FloydWarshallResponse(List<Integer> optimalPath, int totalCost, int[][] distanceMatrix, int[][] predecessorMatrix, HashMap<Integer, List<PathCost>> subPaths) {
+    public FloydWarshallResponse(List<Integer> optimalPath, 
+    		double totalCost, 
+    		double[][] distanceMatrix, 
+    		double[][] predecessorMatrix, 
+    		HashMap<Integer, List<PathCost>> subPaths) {
         this.optimalPath = optimalPath;
         this.totalCost = totalCost;
         this.distanceMatrix = distanceMatrix;
@@ -27,27 +31,27 @@ public class FloydWarshallResponse {
         this.optimalPath = optimalPath;
     }
 
-    public int getTotalCost() {
+    public double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 
-    public int[][] getDistanceMatrix() {
+    public double[][] getDistanceMatrix() {
         return distanceMatrix;
     }
 
-    public void setDistanceMatrix(int[][] distanceMatrix) {
+    public void setDistanceMatrix(double[][] distanceMatrix) {
         this.distanceMatrix = distanceMatrix;
     }
 
-    public int[][] getPredecessorMatrix() {
+    public double[][] getPredecessorMatrix() {
         return predecessorMatrix;
     }
 
-    public void setPredecessorMatrix(int[][] predecessorMatrix) {
+    public void setPredecessorMatrix(double[][] predecessorMatrix) {
         this.predecessorMatrix = predecessorMatrix;
     }
 

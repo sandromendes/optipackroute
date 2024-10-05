@@ -29,20 +29,12 @@
 
 	<!-- Project dependencies -->
 	<dependencies>
-		<!-- Logging dependencies for Log4j and SLF4J -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
 
+		<!-- Spring Framework context dependency for application context
+		functionality -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j2-impl</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 
 		<!-- JUnit dependency for unit testing, only for test scope -->
@@ -56,6 +48,13 @@
 		<dependency>
 			<groupId>com.codejukebox</groupId>
 			<artifactId>optipackroute.domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Dependency for the persistence layer of the project -->
+		<dependency>
+			<groupId>com.codejukebox</groupId>
+			<artifactId>optipackroute.persistence</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

@@ -4,13 +4,13 @@ public class PathCost {
 
 	private Integer origin;
 	private Integer destiny;
-	private Integer subCost;
-	
+	private Double subCost;
+
 	public PathCost() {
 		super();
 	}
-	
-	public PathCost(Integer origin, Integer destiny, Integer subCost) {
+
+	public PathCost(Integer origin, Integer destiny, Double subCost) {
 		super();
 		this.origin = origin;
 		this.destiny = destiny;
@@ -20,19 +20,24 @@ public class PathCost {
 	public Integer getOrigin() {
 		return origin;
 	}
+
 	public void setOrigin(Integer origin) {
 		this.origin = origin;
 	}
+
 	public Integer getDestiny() {
 		return destiny;
 	}
+
 	public void setDestiny(Integer destiny) {
 		this.destiny = destiny;
 	}
-	public Integer getSubCost() {
+
+	public Double getSubCost() {
 		return subCost;
 	}
-	public void setSubCost(Integer subCost) {
+
+	public void setSubCost(Double subCost) {
 		this.subCost = subCost;
 	}
 }

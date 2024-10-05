@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.codejukebox.optipackroute.core.algorithms.router.floydwarshall.FloydWarshallAlgorithmEnhanced;
 import com.codejukebox.optipackroute.core.common.ConstantsUtil;
-import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallEnhancedResult;
 
 public class FloydWarshallEnhanced100x100 extends FloydWarshallSampleBase {
 public static final int INF = ConstantsUtil.INFINITY; 
@@ -14,7 +13,7 @@ public static final int INF = ConstantsUtil.INFINITY;
     }
     
     private static void runFloydWarshallEnhanced(){        
-        int[][] matrix = getSourceMatrix100x100();
+        var matrix = getSourceMatrix100x100();
         
         var floydWarshall = new FloydWarshallAlgorithmEnhanced(matrix);
         floydWarshall.runPreProcessor();
@@ -39,8 +38,8 @@ public static final int INF = ConstantsUtil.INFINITY;
         printResult(result, false);
     }
     
-    private static int[][] getSourceMatrix100x100() {
-        int[][] matrix = new int[100][100];
+    private static double[][] getSourceMatrix100x100() {
+    	double[][] matrix = new double[100][100];
 
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {

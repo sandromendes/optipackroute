@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.codejukebox.optipackroute.core.common.ConstantsUtil;
 import com.codejukebox.optipackroute.domain.models.floydwarshall.FloydWarshallEnhancedResult;
 import com.codejukebox.optipackroute.domain.models.floydwarshall.PathCost;
@@ -45,11 +48,13 @@ import com.codejukebox.optipackroute.domain.models.floydwarshall.PathCost;
  * </p>
  */
 public class FloydWarshallAlgorithmEnhanced {
+	private static final Logger logger = LoggerFactory.getLogger(FloydWarshallAlgorithmEnhanced.class);
+	
 	public static final int INF = ConstantsUtil.INFINITY; // Value representing infinity
 	
-	private int[][] originalMatrix;
-	private int[][] routeCostMatrix;
-	private int[][] predecessorMatrix;
+	private double[][] originalMatrix;
+	private double[][] routeCostMatrix;
+	private double[][] predecessorMatrix;
 	private int[] shortestPath;
 	private int[] optimalPath;
 	private ArrayList<Integer> path;
@@ -63,20 +68,20 @@ public class FloydWarshallAlgorithmEnhanced {
 	}
 
 	// Getter e Setter para routeCostMatrix
-	public int[][] getRouteCostMatrix() {
+	public double[][] getRouteCostMatrix() {
 		return routeCostMatrix;
 	}
 
-	public void setRouteCostMatrix(int[][] routeCostMatrix) {
+	public void setRouteCostMatrix(double[][] routeCostMatrix) {
 		this.routeCostMatrix = routeCostMatrix;
 	}
 
 	// Getter e Setter para predecessorMatrix
-	public int[][] getPredecessorMatrix() {
+	public double[][] getPredecessorMatrix() {
 		return predecessorMatrix;
 	}
 
-	public void setPredecessorMatrix(int[][] predecessorMatrix) {
+	public void setPredecessorMatrix(double[][] predecessorMatrix) {
 		this.predecessorMatrix = predecessorMatrix;
 	}
 
@@ -146,25 +151,35 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *  	FloydWarshallEnhancedV0 floydWarshall = new FloydWarshallEnhancedV0(matrix);
 	 *  </pre>
 	 */
-	public FloydWarshallAlgorithmEnhanced(int[][] originalMatrix) {		
-		if (originalMatrix == null || originalMatrix.length == 0 || originalMatrix[0].length == 0) {
-			throw new IllegalArgumentException(
-					"Invalid adjacency matrix: it must be non-null and have valid dimensions.");
-		}
+    public FloydWarshallAlgorithmEnhanced(double[][] originalMatrix) {
+        logger.info("Initializing FloydWarshallAlgorithmEnhanced with provided adjacency matrix.");
 
-		// Ensure the matrix is square
-		for (int i = 0; i < originalMatrix.length; i++) {
-			if (originalMatrix[i].length != originalMatrix.length) {
-				throw new IllegalArgumentException("Adjacency matrix must be square.");
-			}
-		}
+        if (originalMatrix == null || originalMatrix.length == 0 || originalMatrix[0].length == 0) {
+            logger.error("Invalid adjacency matrix: it must be non-null and have valid dimensions.");
+            throw new IllegalArgumentException(
+                    "Invalid adjacency matrix: it must be non-null and have valid dimensions.");
+        }
 
-		this.originalMatrix = originalMatrix;
-		this.routeCostMatrix = new int[originalMatrix.length][originalMatrix.length];
-		this.predecessorMatrix = new int[originalMatrix.length][originalMatrix.length];
+        // Ensure the matrix is square
+        for (int i = 0; i < originalMatrix.length; i++) {
+            if (originalMatrix[i].length != originalMatrix.length) {
+                logger.error("Adjacency matrix must be square.");
+                throw new IllegalArgumentException("Adjacency matrix must be square.");
+            }
+        }
 
-		result = new FloydWarshallEnhancedResult();
-	}
+        this.originalMatrix = originalMatrix;
+        logger.debug("Original matrix set successfully.");
+
+        this.routeCostMatrix = new double[originalMatrix.length][originalMatrix.length];
+        logger.debug("Route cost matrix initialized with dimensions: {}", originalMatrix.length);
+
+        this.predecessorMatrix = new double[originalMatrix.length][originalMatrix.length];
+        logger.debug("Predecessor matrix initialized with dimensions: {}", originalMatrix.length);
+
+        result = new FloydWarshallEnhancedResult();
+        logger.info("FloydWarshallAlgorithmEnhanced initialization completed successfully.");
+    }
 
 	/**
 	 * Executes the Floyd-Warshall algorithm to compute the shortest paths between
@@ -174,17 +189,25 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *         vertices, and predecessor matrix.
 	 * @throws IllegalStateException if the matrices are not properly initialized.
 	 */
-	public void runPreProcessor() {
+    public void runPreProcessor() {
+        logger.info("Starting the pre-processing step.");
 
-		if (routeCostMatrix == null || predecessorMatrix == null) {
-			throw new IllegalStateException("Matrices must be initialized before running the algorithm.");
-		}
-		
-		int[][] distanceMatrix = new int[getMatrixSize()][getMatrixSize()];
+        if (routeCostMatrix == null || predecessorMatrix == null) {
+            logger.error("Matrices must be initialized before running the algorithm.");
+            throw new IllegalStateException("Matrices must be initialized before running the algorithm.");
+        }
 
-		initializeMatrices(distanceMatrix);
-		computeShortestPaths(distanceMatrix);
-	}
+        logger.debug("Matrices are initialized, proceeding with distance matrix creation.");
+
+        double[][] distanceMatrix = new double[getMatrixSize()][getMatrixSize()];
+        logger.debug("Distance matrix initialized with size: {}", getMatrixSize());
+
+        initializeMatrices(distanceMatrix);
+        logger.info("Matrices initialized successfully.");
+
+        computeShortestPaths(distanceMatrix);
+        logger.info("Shortest paths computed successfully.");
+    }
 
 	/**
 	 * Initializes the distance and predecessor matrices for the Floyd-Warshall
@@ -206,28 +229,38 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *                                  floydWarshall.initializeMatrices(distanceMatrix);
 	 *                                  </pre>
 	 */
-	private void initializeMatrices(int[][] distanceMatrix) {
-		// Check if the input distance matrix is null or has invalid dimensions
-		if (distanceMatrix == null || distanceMatrix.length != originalMatrix.length) {
-			throw new IllegalArgumentException(
-					"Distance matrix must be non-null and have the same dimensions as the original matrix.");
-		}
+    private void initializeMatrices(double[][] distanceMatrix) {
+        logger.info("Initializing matrices.");
 
-		// Initialize the distance and predecessor matrices
-		for (int i = 0; i < distanceMatrix.length; i++) {
-			for (int j = 0; j < distanceMatrix.length; j++) {
-				// Set distance matrix with values from the original matrix
-				distanceMatrix[i][j] = originalMatrix[i][j];
+        // Check if the input distance matrix is null or has invalid dimensions
+        if (distanceMatrix == null || distanceMatrix.length != originalMatrix.length) {
+            logger.error("Distance matrix must be non-null and have the same dimensions as the original matrix.");
+            throw new IllegalArgumentException(
+                    "Distance matrix must be non-null and have the same dimensions as the original matrix.");
+        }
 
-				// Initialize the predecessor matrix based on the distance values
-				if (distanceMatrix[i][j] == INF || i == j) {
-					predecessorMatrix[i][j] = INF;
-				} else if (i != j && distanceMatrix[i][j] < INF) {
-					predecessorMatrix[i][j] = i + 1;
-				}
-			}
-		}
-	}
+        logger.debug("Distance matrix dimensions are valid. Proceeding with initialization.");
+
+        // Initialize the distance and predecessor matrices
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            for (int j = 0; j < distanceMatrix.length; j++) {
+                // Set distance matrix with values from the original matrix
+                distanceMatrix[i][j] = originalMatrix[i][j];
+
+                // Initialize the predecessor matrix based on the distance values
+                if (distanceMatrix[i][j] == INF || i == j) {
+                    predecessorMatrix[i][j] = INF;
+                } else if (i != j && distanceMatrix[i][j] < INF) {
+                    predecessorMatrix[i][j] = i + 1;
+                }
+
+                logger.debug("Set distanceMatrix[{}][{}] = {} and predecessorMatrix[{}][{}] = {}",
+                        i, j, distanceMatrix[i][j], i, j, predecessorMatrix[i][j]);
+            }
+        }
+
+        logger.info("Matrices initialized successfully.");
+    }
 
 	/**
 	 * Computes the shortest paths between all pairs of vertices using the
@@ -251,34 +284,43 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *                                  floydWarshall.computeShortestPaths(distanceMatrix);
 	 *                                  </pre>
 	 */
-	public void computeShortestPaths(int[][] distanceMatrix) {
-		// Check if the input distance matrix is null or has invalid dimensions
-		if (distanceMatrix == null || distanceMatrix.length != getMatrixSize()) {
-			throw new IllegalArgumentException("Distance matrix must be non-null and match the matrix size.");
-		}
+    public void computeShortestPaths(double[][] distanceMatrix) {
+        logger.info("Computing shortest paths.");
 
-		// Compute the shortest paths between all pairs of vertices
-		for (int k = 0; k < getMatrixSize(); k++) {
-			for (int i = 0; i < getMatrixSize(); i++) {
-				for (int j = 0; j < getMatrixSize(); j++) {
-					// Update distance and predecessor matrices if a shorter path is found
-					if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
-						distanceMatrix[i][j] = distanceMatrix[i][k] + distanceMatrix[k][j];
-						predecessorMatrix[i][j] = predecessorMatrix[k][j];
-					}
-				}
-			}
+        // Check if the input distance matrix is null or has invalid dimensions
+        if (distanceMatrix == null || distanceMatrix.length != getMatrixSize()) {
+            logger.error("Distance matrix must be non-null and match the matrix size.");
+            throw new IllegalArgumentException("Distance matrix must be non-null and match the matrix size.");
+        }
 
-			// Update the original matrix with the current distance matrix state
-			originalMatrix = distanceMatrix;
-		}
+        logger.debug("Starting to compute shortest paths with matrix size: {}", getMatrixSize());
 
-		// Update the route cost matrix and result object with the final distance and
-		// predecessor matrices
-		routeCostMatrix = distanceMatrix;
-		result.setDistanceMatrix(distanceMatrix);
-		result.setPredecessorMatrix(predecessorMatrix);
-	}
+        // Compute the shortest paths between all pairs of vertices
+        for (int k = 0; k < getMatrixSize(); k++) {
+            for (int i = 0; i < getMatrixSize(); i++) {
+                for (int j = 0; j < getMatrixSize(); j++) {
+                    // Update distance and predecessor matrices if a shorter path is found
+                    if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
+                        logger.debug("Found shorter path: distanceMatrix[{}][{}] > distanceMatrix[{}][{}] + distanceMatrix[{}][{}]",
+                                i, j, i, k, k, j);
+                        distanceMatrix[i][j] = distanceMatrix[i][k] + distanceMatrix[k][j];
+                        predecessorMatrix[i][j] = predecessorMatrix[k][j];
+                    }
+                }
+            }
+
+            // Update the original matrix with the current distance matrix state
+            originalMatrix = distanceMatrix;
+            logger.debug("Updated originalMatrix with current distance matrix state after iteration {}", k);
+        }
+
+        // Update the route cost matrix and result object with the final distance and predecessor matrices
+        routeCostMatrix = distanceMatrix;
+        result.setDistanceMatrix(distanceMatrix);
+        result.setPredecessorMatrix(predecessorMatrix);
+
+        logger.info("Shortest path computation completed successfully.");
+    }
 
 	private HashMap<Integer, List<PathCost>> iterations = new HashMap<Integer, List<PathCost>>(); 
 	
@@ -302,86 +344,94 @@ public class FloydWarshallAlgorithmEnhanced {
 	 *                                  findOptimalConfiguration(cities, 1); // Prints the optimal path starting from city 1
 	 *                                  </pre>
 	 */
-	public void findOptimalConfiguration(ArrayList<Integer> elements, Integer startCity) {
-		// Validate inputs
-		if (elements == null || elements.isEmpty()) {
-			throw new IllegalArgumentException("Elements list must not be null or empty.");
-		}
-		if (startCity == null || !elements.contains(startCity)) {
-			throw new IllegalArgumentException("Start city must be part of the elements list.");
-		}
-		if (routeCostMatrix == null || routeCostMatrix.length == 0 || routeCostMatrix[0].length == 0) {
-			throw new IllegalStateException("Route cost matrix is not properly initialized.");
-		}
-		if (result == null) {
-			throw new IllegalStateException("Result object is not initialized.");
-		}
-		
-	    // Measure start time
-	    long startTime = System.nanoTime();
-		
-		// Initialize variables
-		var generator = new PermutationGenerator(elements.size());
-		int[] indices;
-		int cost = 0;
-		int partialCost;
-		int minCost = INF;
-		shortestPath = new int[elements.size()];
-		optimalPath = new int[elements.size()];
-		path = new ArrayList<>();
-		cityPairs = new int[elements.size()][2];
+    public void findOptimalConfiguration(ArrayList<Integer> elements, Integer startCity) {
+        logger.info("Finding optimal configuration for the given elements.");
 
-		int key = 0;
-		
-		// Generate permutations and calculate costs
-		while (generator.hasMore()) {
-			indices = generator.getNext();
-			
-			key++;
-			var paths = new ArrayList<PathCost>();
-			
-			for (int i = 0; i < indices.length - 1; i++) {		
-				cityPairs[i][0] = elements.get(indices[i]);
-				cityPairs[i][1] = elements.get(indices[i + 1]);
+        // Validate inputs
+        if (elements == null || elements.isEmpty()) {
+            logger.error("Elements list must not be null or empty.");
+            throw new IllegalArgumentException("Elements list must not be null or empty.");
+        }
+        if (startCity == null || !elements.contains(startCity)) {
+            logger.error("Start city must be part of the elements list.");
+            throw new IllegalArgumentException("Start city must be part of the elements list.");
+        }
+        if (routeCostMatrix == null || routeCostMatrix.length == 0 || routeCostMatrix[0].length == 0) {
+            logger.error("Route cost matrix is not properly initialized.");
+            throw new IllegalStateException("Route cost matrix is not properly initialized.");
+        }
+        if (result == null) {
+            logger.error("Result object is not initialized.");
+            throw new IllegalStateException("Result object is not initialized.");
+        }
+        
+        // Measure start time
+        long startTime = System.nanoTime();
+        logger.info("Start processing for optimal configuration at {}", startTime);
+        
+        // Initialize variables
+        var generator = new PermutationGenerator(elements.size());
+        int[] indices;
+        double cost = 0;
+        double partialCost;
+        double minCost = INF;
+        shortestPath = new int[elements.size()];
+        optimalPath = new int[elements.size()];
+        path = new ArrayList<>();
+        cityPairs = new int[elements.size()][2];
 
-				if (shortestPath.length == indices.length) {
-					shortestPath[i] = cityPairs[i][0];
-					shortestPath[i + 1] = cityPairs[i][1];
-				}
+        int key = 0;
+        
+        // Generate permutations and calculate costs
+        while (generator.hasMore()) {
+            indices = generator.getNext();
+            key++;
+            logger.debug("Processing permutation with key: {}", key);
+            var paths = new ArrayList<PathCost>();
+            
+            for (int i = 0; i < indices.length - 1; i++) {		
+                cityPairs[i][0] = elements.get(indices[i]);
+                cityPairs[i][1] = elements.get(indices[i + 1]);
 
-				partialCost = routeCostMatrix[cityPairs[i][0] - 1][cityPairs[i][1] - 1] != INF
-						? routeCostMatrix[cityPairs[i][0] - 1][cityPairs[i][1] - 1]
-						: 0;
+                if (shortestPath.length == indices.length) {
+                    shortestPath[i] = cityPairs[i][0];
+                    shortestPath[i + 1] = cityPairs[i][1];
+                }
 
-				cost += partialCost;
+                partialCost = routeCostMatrix[cityPairs[i][0] - 1][cityPairs[i][1] - 1] != INF
+                        ? routeCostMatrix[cityPairs[i][0] - 1][cityPairs[i][1] - 1]
+                        : 0;
 
-				paths.add(new PathCost(cityPairs[i][0], cityPairs[i][1], partialCost));
-				
-				if ((i + 1) % (elements.size() - 1) == 0) {
-					if (cost < minCost) {
-						minCost = cost;
-						System.arraycopy(shortestPath, 0, optimalPath, 0, shortestPath.length);
-					}
-					
-					cost = 0;
-				}
-			}
-			
-			iterations.put(key, paths);
-		}
+                cost += partialCost;
+                logger.debug("Current cost for city pair [{} -> {}]: {}", cityPairs[i][0], cityPairs[i][1], partialCost);
 
-		result.setSubPaths(iterations);
-		
-		var optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
-		result.setPath(optimalPathList);
-		result.setTotalCost(minCost);
-		
-		// Measure end time and calculate duration
-	    long endTime = System.nanoTime();
-	    long durationInNanoseconds = endTime - startTime;
-	    double durationInMilliseconds = durationInNanoseconds / 1_000_000.0;
-	    
-	    // Print the processing time
-	    System.out.printf("Processing time: %.2f milliseconds%n", durationInMilliseconds);
-	}
+                paths.add(new PathCost(cityPairs[i][0], cityPairs[i][1], partialCost));
+                
+                if ((i + 1) % (elements.size() - 1) == 0) {
+                    if (cost < minCost) {
+                        minCost = cost;
+                        System.arraycopy(shortestPath, 0, optimalPath, 0, shortestPath.length);
+                        logger.info("New optimal path found with cost: {}", minCost);
+                    }
+                    cost = 0;
+                }
+            }
+            
+            iterations.put(key, paths);
+        }
+
+        result.setSubPaths(iterations);
+        
+        var optimalPathList = Arrays.stream(optimalPath).boxed().collect(Collectors.toList());
+        result.setPath(optimalPathList);
+        result.setTotalCost(minCost);
+        
+        // Measure end time and calculate duration
+        long endTime = System.nanoTime();
+        long durationInNanoseconds = endTime - startTime;
+        double durationInMilliseconds = durationInNanoseconds / 1_000_000.0;
+        
+        // Print the processing time
+        logger.info("Processing time: {:.2f} milliseconds", durationInMilliseconds);
+    }
 }
