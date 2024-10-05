@@ -3,16 +3,16 @@ package com.codejukebox.optipackroute.domain.models.floydwarshall;
 import java.util.List;
 
 public class FloydWarshallRequest {
-    private int[][] matrix;
+    private double[][] matrix;
     private List<Integer> nodes;
     private int initialNode;
 
     // Getters e Setters
-    public int[][] getMatrix() {
+    public double[][] getMatrix() {
         return matrix;
     }
 
-    public void setMatrix(int[][] matrix) {
+    public void setMatrix(double[][] matrix) {
         this.matrix = matrix;
     }
 

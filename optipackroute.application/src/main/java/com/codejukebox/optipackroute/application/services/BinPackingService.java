@@ -26,6 +26,12 @@ public class BinPackingService {
 
     private static final Logger logger = LoggerFactory.getLogger(BinPackingService.class);
 
+    private final AnxietatemAlgorithm anxietatemAlgorithm;
+
+    public BinPackingService(AnxietatemAlgorithm anxietatemAlgorithm) {
+        this.anxietatemAlgorithm = anxietatemAlgorithm;
+    }
+    
     public PackingResultDTO packUsingBottomLeftBack(ContainerDTO containerDTO) {
         logger.info("Starting Bottom Left Back packing for container: {}", containerDTO);
         try {
@@ -113,14 +119,16 @@ public class BinPackingService {
     
     public AnxietatemResultDTO packUsingAnxietatem(ContainerDTO containerDTO) {
         logger.info("Starting Anxietatem packing for container: {}", containerDTO);
-        try {
-            var algorithm = new AnxietatemAlgorithm(
-                new Dimensions(containerDTO.getLength(), containerDTO.getHeight(), containerDTO.getDepth()), 
-                containerDTO.getBoxes().size()
-            );
+        try {          
+            var dimension = new Dimensions(containerDTO.getLength(), containerDTO.getHeight(), containerDTO.getDepth());
+            
+            anxietatemAlgorithm.setup(dimension, containerDTO.getBoxes().size());
+            
             var boxes = mapBoxDTOToBox(containerDTO.getBoxes());
-            algorithm.loadAvailableBoxes(boxes);
-            return algorithm.pack();
+            
+            anxietatemAlgorithm.loadAvailableBoxes(boxes);
+            
+            return anxietatemAlgorithm.pack();
         } catch (Exception e) {
             logger.error("Error during Anxietatem packing: {}", e.getMessage(), e);
             throw new RuntimeException("Packing failed: " + e.getMessage(), e);

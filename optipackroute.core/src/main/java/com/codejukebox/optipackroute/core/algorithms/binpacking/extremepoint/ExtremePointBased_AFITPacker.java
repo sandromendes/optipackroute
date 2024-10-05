@@ -32,7 +32,7 @@ public class ExtremePointBased_AFITPacker implements IBinPackingAlgorithm {
 
     @Override
     public PackingResult pack() {
-    	availableBoxes.sort(Comparator.comparing(Box::getVolume).reversed());  // Ordena caixas por volume decrescente
+    	availableBoxes.sort(Comparator.comparing(Box::calculateVolume).reversed());  // Ordena caixas por volume decrescente
 
         for (var box : availableBoxes) {
             boolean packed = false;

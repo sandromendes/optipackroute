@@ -11,36 +11,39 @@ public class FloydWarshallEnhancedResult {
 	
     public static final int INFINITY = ConstantsUtil.INFINITY; 
 
-    private int[][] distanceMatrix;  // Matriz de distâncias
-    private int[][] predecessorMatrix; // Matriz de predecessores
+    private double[][] distanceMatrix;  // Matriz de distâncias
+    private double[][] predecessorMatrix; // Matriz de predecessores
     private List<Integer> path;       // Caminho percorrido
-    private int totalCost;            // Custo total
+    private double totalCost;            // Custo total
     private HashMap<Integer, List<PathCost>> subPaths = new HashMap<Integer, List<PathCost>>(); 
     
     public FloydWarshallEnhancedResult() {
 		super();
 	}
 
-	public FloydWarshallEnhancedResult(int[][] distanceMatrix, int[][] predecessorMatrix, List<Integer> path, int totalCost) {
+	public FloydWarshallEnhancedResult(double[][] distanceMatrix, 
+			double[][] predecessorMatrix, 
+			List<Integer> path, 
+			int totalCost) {
         this.distanceMatrix = distanceMatrix;
         this.predecessorMatrix = predecessorMatrix;
         this.path = path;
         this.totalCost = totalCost;
     }
 
-	public int[][] getDistanceMatrix() {
+	public double[][] getDistanceMatrix() {
 		return distanceMatrix;
 	}
 
-	public void setDistanceMatrix(int[][] distanceMatrix) {
+	public void setDistanceMatrix(double[][] distanceMatrix) {
 		this.distanceMatrix = distanceMatrix;
 	}
 
-	public int[][] getPredecessorMatrix() {
+	public double[][] getPredecessorMatrix() {
 		return predecessorMatrix;
 	}
 
-	public void setPredecessorMatrix(int[][] predecessorMatrix) {
+	public void setPredecessorMatrix(double[][] predecessorMatrix) {
 		this.predecessorMatrix = predecessorMatrix;
 	}
 
@@ -52,11 +55,11 @@ public class FloydWarshallEnhancedResult {
 		this.path = path;
 	}
 
-	public int getTotalCost() {
+	public double getTotalCost() {
 		return totalCost;
 	}
 
-	public void setTotalCost(int totalCost) {
+	public void setTotalCost(double totalCost) {
 		this.totalCost = totalCost;
 	}
 
@@ -87,8 +90,8 @@ public class FloydWarshallEnhancedResult {
 	public void printSubPaths() {
 	    // Iterate through each entry in the subPaths HashMap
 	    for (Map.Entry<Integer, List<PathCost>> entry : this.getSubPaths().entrySet()) {
-	        Integer pathKey = entry.getKey(); // Key representing the identifier of the sub-path
-	        List<PathCost> pathCosts = entry.getValue(); // List of PathCost objects representing each leg of the sub-path
+	    	var pathKey = entry.getKey(); // Key representing the identifier of the sub-path
+	        var pathCosts = entry.getValue(); // List of PathCost objects representing each leg of the sub-path
 	        
 	        // Print the sub-path identifier
 	        System.out.println("Sub-paths for path " + pathKey + ":");
@@ -104,8 +107,7 @@ public class FloydWarshallEnhancedResult {
 	}
 
 	public void printPath() {
-		
-		List<Integer> path = this.getPath();
+		var path = this.getPath();
 		
 	    if (path == null || path.isEmpty()) {
 	        System.out.println("No path found.");
@@ -129,7 +131,7 @@ public class FloydWarshallEnhancedResult {
 		printMatrix(predecessorMatrix, "Predecessor");
 	}
 	
-	private void printMatrix(int[][] matrix, String matrixType) {
+	private void printMatrix(double[][] matrix, String matrixType) {
 	    if (matrix == null || matrix.length == 0) {
 	        System.out.println("No data available for " + matrixType + ".");
 	        return;

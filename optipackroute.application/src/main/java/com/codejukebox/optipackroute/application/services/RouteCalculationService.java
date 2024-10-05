@@ -55,7 +55,7 @@ public class RouteCalculationService {
     public FloydWarshallResponse calculateOptimalPath(FloydWarshallRequest request) {
         logger.info("Starting Floyd-Warshall algorithm with request: {}", request);
         try {
-            int[][] matrix = request.getMatrix();
+            var matrix = request.getMatrix();
             var nodes = request.getNodes();
             int initialNode = request.getInitialNode();
 

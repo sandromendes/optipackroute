@@ -1,96 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- Specifies the version of the POM (Project Object Model) model used -->
-    <modelVersion>4.0.0</modelVersion>
+	<!-- Specifies the version of the POM (Project Object Model) model used -->
+	<modelVersion>4.0.0</modelVersion>
 
-    <!-- The parent POM from which this project inherits configurations, here it's the Spring Boot starter parent -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
-        <relativePath /> <!-- Allows Maven to find the parent from repository instead of relative path -->
-    </parent>
+	<!-- The parent POM from which this project inherits configurations, here
+	it's the Spring Boot starter parent -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath /> <!-- Allows Maven to find the parent from repository
+		instead of relative path -->
+	</parent>
 
-    <!-- The group ID uniquely identifies the project across all projects -->
-    <groupId>com.codejukebox</groupId>
+	<!-- The group ID uniquely identifies the project across all projects -->
+	<groupId>com.codejukebox</groupId>
 
-    <!-- The unique identifier for this project, representing this POM file -->
-    <artifactId>optipackroute.parent</artifactId>
+	<!-- The unique identifier for this project, representing this POM file -->
+	<artifactId>optipackroute.parent</artifactId>
 
-    <!-- The current version of the project; "SNAPSHOT" indicates an in-progress version -->
-    <version>0.0.1-SNAPSHOT</version>
+	<!-- The current version of the project; "SNAPSHOT" indicates an in-progress
+	version -->
+	<version>0.0.1-SNAPSHOT</version>
 
-    <!-- Defines the type of project packaging. "pom" means this is a parent project with no direct output (e.g., no JAR) -->
-    <packaging>pom</packaging>
+	<!-- Defines the type of project packaging. "pom" means this is a parent
+	project with no direct output (e.g., no JAR) -->
+	<packaging>pom</packaging>
 
-    <!-- The human-readable name of the project -->
-    <name>optipackroute</name>
+	<!-- The human-readable name of the project -->
+	<name>optipackroute</name>
 
-    <!-- A brief description of what the project does -->
-    <description>Focused in solve classic route and load problems</description>
+	<!-- A brief description of what the project does -->
+	<description>Focused in solve classic route and load problems</description>
 
-    <!-- Lists all the modules (sub-projects) that are part of this parent project -->
-    <modules>
-        <module>optipackroute.core</module>
-        <module>optipackroute.application</module>
-        <module>optipackroute.domain</module>
-        <module>optipackroute.api</module>
-    </modules>
+	<!-- Lists all the modules (sub-projects) that are part of this parent
+	project -->
+	<modules>
+		<module>optipackroute.core</module>
+		<module>optipackroute.application</module>
+		<module>optipackroute.domain</module>
+		<module>optipackroute.api</module>
+		<module>optipackroute.persistence</module>
+	</modules>
 
-    <!-- Manages dependency versions across all modules to maintain consistency -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- SLF4J is a logging API that acts as an abstraction for various logging frameworks -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>2.0.7</version>
-            </dependency>
+	<!-- Manages dependency versions across all modules to maintain consistency -->
+	<dependencyManagement>
+		<dependencies>
+			<!-- SLF4J is a logging API that acts as an abstraction for various
+			logging frameworks -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>2.0.7</version>
+			</dependency>
 
-            <!-- Spring Boot Web Starter: Provides the foundation for building web applications -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-            </dependency>
+			<!-- Spring Boot Web Starter: Provides the foundation for building
+			web applications -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+			</dependency>
 
-            <!-- Spring Boot Security Starter: Adds authentication and authorization capabilities -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-            </dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
+			</dependency>
 
-            <!-- Spring Boot DevTools: Adds utilities for easier development, such as automatic reload -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <scope>runtime</scope> <!-- Only used during runtime, not during testing or compiling -->
-                <optional>true</optional> <!-- Marks the dependency as optional, not mandatory for others -->
-            </dependency>
+			<!-- Spring Boot Security Starter: Adds authentication and
+			authorization capabilities -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+			</dependency>
 
-            <!-- Spring Context: Provides core support for annotations such as @Service, @Component, etc. -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>6.1.13</version>
-            </dependency>
+			<!-- Spring Boot DevTools: Adds utilities for easier development,
+			such as automatic reload -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-devtools</artifactId>
+				<scope>runtime</scope> <!-- Only used during runtime, not during
+				testing or compiling -->
+				<optional>true</optional> <!-- Marks the dependency as optional,
+				not mandatory for others -->
+			</dependency>
 
-            <!-- Spring Boot Starter Test: Includes testing tools and dependencies for testing Spring Boot applications -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <scope>test</scope> <!-- Only used during test phases -->
-            </dependency>
+			<!-- Spring Context: Provides core support for annotations such as
+			@Service, @Component, etc. -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.1.13</version>
+			</dependency>
 
-            <!-- Spring Security Test: Adds utilities for testing security features in Spring Security applications -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-test</artifactId>
-                <scope>test</scope> <!-- Only used during test phases -->
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+			<!-- Spring Boot Starter Test: Includes testing tools and
+			dependencies for testing Spring Boot applications -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<scope>test</scope> <!-- Only used during test phases -->
+			</dependency>
+
+			<!-- Spring Security Test: Adds utilities for testing security
+			features in Spring Security applications -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-test</artifactId>
+				<scope>test</scope> <!-- Only used during test phases -->
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

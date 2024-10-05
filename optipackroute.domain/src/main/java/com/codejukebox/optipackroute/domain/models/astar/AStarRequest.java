@@ -4,8 +4,12 @@ public class AStarRequest {
     private int[][] matrix;
     private int startNode;
     private int goalNode;
+    
+    public AStarRequest() {
+		super();
+	}
 
-    public AStarRequest(int[][] matrix, int startNode, int goalNode) {
+	public AStarRequest(int[][] matrix, int startNode, int goalNode) {
         this.matrix = matrix;
         this.startNode = startNode;
         this.goalNode = goalNode;

@@ -1,11 +1,14 @@
 package com.codejukebox.optipackroute.core.algorithms.binpacking.anxietatem;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.codejukebox.optipackroute.core.algorithms.binpacking.interfaces.IAnxietatemAlgorithm;
 import com.codejukebox.optipackroute.domain.models.binpacking.AnxietatemResultDTO;
@@ -13,37 +16,59 @@ import com.codejukebox.optipackroute.domain.models.binpacking.Box;
 import com.codejukebox.optipackroute.domain.models.binpacking.Coordinates;
 import com.codejukebox.optipackroute.domain.models.binpacking.CornerPoint;
 import com.codejukebox.optipackroute.domain.models.binpacking.Dimensions;
+import com.codejukebox.optipackroute.persistence.repository.interfaces.RedisRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The Packer class manages the packing of boxes into a container, considering
  * the selection of boxes and corner points, and generates new corner points
  * based on the packed boxes.
  */
+@Service
 public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 
 	private static final Logger logger = LoggerFactory.getLogger(AnxietatemAlgorithm.class);
 
+    private final RedisRepository redisRepository;
+    private final ObjectMapper objectMapper;
+    
 	private int state = 1; // Current state of the packer
-	private ArrayList<CornerPoint> availableCornerPoints; // Set of available corner points
 	private ArrayList<CornerPoint> usedCornerPoints; // Set of points already used and in sequence
 	private ArrayList<Box> packedBoxes; // Set of packed boxes
 	private ArrayList<Box> unpackedBoxes; // Set of available boxes
 	private Box selectedBox; // Currently selected box
 	private int numberOfBoxes;
 	private Dimensions dimensions;
+	
+	private static String AVAILABLE_POINTS_DATA_LIST_NAME = "availableCornerPoints";
 
 	/**
 	 * Constructor for the Packer class.
 	 */
-	public AnxietatemAlgorithm(Dimensions dimensions, int numberOfBoxes) {
-		packedBoxes = new ArrayList<Box>();
-		availableCornerPoints = new ArrayList<CornerPoint>();
-		usedCornerPoints = new ArrayList<CornerPoint>();
+	public AnxietatemAlgorithm(RedisRepository redisRepository, 
+			ObjectMapper objectMapper) {
 		
+		this.redisRepository = redisRepository;
+		this.objectMapper = objectMapper;
+		
+		packedBoxes = new ArrayList<Box>();
+		
+        var now = LocalDateTime.now();
+        var formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        var formattedDateTime = now.format(formatter);
+		
+		AVAILABLE_POINTS_DATA_LIST_NAME += formattedDateTime;
+		
+        redisRepository.saveArrayList(AVAILABLE_POINTS_DATA_LIST_NAME, new ArrayList<CornerPoint>());
+		
+		usedCornerPoints = new ArrayList<CornerPoint>();
+	}
+
+	public void setup(Dimensions dimensions, int numberOfBoxes) {		
 		this.numberOfBoxes = numberOfBoxes;
 		this.dimensions = dimensions;
 	}
-
+	
 	/**
 	 * Randomly selects a box from the set of unpacked boxes and adds it to the set
 	 * of packed boxes.
@@ -98,7 +123,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 	 *          </pre>
 	 */
 	public CornerPoint choosePoint() {
-		if (availableCornerPoints.isEmpty()) {
+		if (retrieveAvailableCornerPoints().isEmpty()) {
 			logger.error("No available corner points to choose from.");
 			throw new IllegalStateException("No available corner points.");
 		}
@@ -107,12 +132,15 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 		var random = new Random();
 
 		try {
-			int randomIndex = random.nextInt(availableCornerPoints.size());
+			int randomIndex = random.nextInt(retrieveAvailableCornerPoints().size());
 			logger.info("Chosen random number: {}", randomIndex);
 
-			cornerPoint = availableCornerPoints.get(randomIndex);
+			cornerPoint = retrieveAvailableCornerPoints().get(randomIndex);
 			usedCornerPoints.add(cornerPoint);
-			availableCornerPoints.remove(randomIndex);
+			
+			var item = retrieveAvailableCornerPoints().get(randomIndex);
+			
+			redisRepository.removeItemFromList(AVAILABLE_POINTS_DATA_LIST_NAME, item);
 
 		} catch (IndexOutOfBoundsException e) {
 			logger.error("Index out of bounds while choosing a corner point: {}", e.getMessage());
@@ -207,12 +235,13 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 	        loadRandomBoxArray(numberOfBoxes);
 
 	        usedCornerPoints.add(cornerPoint);
-	        availableCornerPoints.add(cornerPoint);
+	        
+	        redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPoint);
 
 	        logger.info("Box array size before Loop: {}", unpackedBoxes.size());
 
 	        for (int i = 0; unpackedBoxes.size() > 0; i++) {
-	            logger.info("Box array size is: {} in iteration number: {}", availableCornerPoints.size(), i);
+	            logger.info("Box array size is: {} in iteration number: {}", retrieveAvailableCornerPoints().size(), i);
 
 	            if (state == 1) {
 	                selectedBox = chooseBox();
@@ -276,7 +305,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 		}
 
 		Coordinates coordinate;
-		var points = new ArrayList<CornerPoint>();
+		List<CornerPoint> points = new ArrayList<CornerPoint>();
 
 		try {
 			if ((cornerPoint.getCoordinates().getX() == 0) && (cornerPoint.getCoordinates().getY() == 0)
@@ -290,7 +319,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 				logger.info("Point with coordinates: {}, {}, {} GENERATED", cornerPointByWidth.getCoordinates().getX(),
 						cornerPointByWidth.getCoordinates().getY(), cornerPointByWidth.getCoordinates().getZ());
 
-				availableCornerPoints.add(cornerPointByWidth);
+				redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByWidth);
 				points.add(cornerPointByWidth);
 
 				coordinate = new Coordinates(0, box.getDimensions().getHeight(), 0);
@@ -300,7 +329,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 				logger.info("Point with coordinates: {}, {}, {} GENERATED", cornerPointByHeight.getCoordinates().getX(),
 						cornerPointByHeight.getCoordinates().getY(), cornerPointByHeight.getCoordinates().getZ());
 
-				availableCornerPoints.add(cornerPointByHeight);
+				redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByHeight);
 				points.add(cornerPointByHeight);
 
 				coordinate = new Coordinates(0, 0, box.getDimensions().getLength());
@@ -310,7 +339,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 				logger.info("Point with coordinates: {}, {}, {} GENERATED", cornerPointByLength.getCoordinates().getX(),
 						cornerPointByLength.getCoordinates().getY(), cornerPointByLength.getCoordinates().getZ());
 
-				availableCornerPoints.add(cornerPointByLength);
+				redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByLength);
 				points.add(cornerPointByLength);
 			} else {
 
@@ -325,8 +354,8 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 					logger.info("Point with coordinates: {}, {}, {} GENERATED",
 							cornerPointByWidth.getCoordinates().getX(), cornerPointByWidth.getCoordinates().getY(),
 							cornerPointByWidth.getCoordinates().getZ());
-
-					availableCornerPoints.add(cornerPointByWidth);
+					
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByWidth);
 					points.add(cornerPointByWidth);
 				} else {
 					coordinate = new Coordinates(cornerPoint.getCoordinates().getX() + box.getDimensions().getWidth(),
@@ -339,7 +368,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 							cornerPointByWidth.getCoordinates().getX(), cornerPointByWidth.getCoordinates().getY(),
 							cornerPointByWidth.getCoordinates().getZ());
 
-					availableCornerPoints.add(cornerPointByWidth);
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByWidth);
 					points.add(cornerPointByWidth);
 				}
 
@@ -348,29 +377,29 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 							cornerPoint.getCoordinates().getY(),
 							cornerPoint.getCoordinates().getZ() + cornerPoint.getBox().getDimensions().getLength());
 
-					var generatedByLength = new CornerPoint(coordinate);
-					generatedByLength.setBox(box);
+					var cornerPointByLength = new CornerPoint(coordinate);
+					cornerPointByLength.setBox(box);
 
 					logger.info("Point with coordinates: {}, {}, {} GENERATED",
-							generatedByLength.getCoordinates().getX(), generatedByLength.getCoordinates().getY(),
-							generatedByLength.getCoordinates().getZ());
+							cornerPointByLength.getCoordinates().getX(), cornerPointByLength.getCoordinates().getY(),
+							cornerPointByLength.getCoordinates().getZ());
 
-					availableCornerPoints.add(generatedByLength);
-					points.add(generatedByLength);
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByLength);
+					points.add(cornerPointByLength);
 				} else {
 					coordinate = new Coordinates(cornerPoint.getCoordinates().getX(),
 							cornerPoint.getCoordinates().getY(),
 							cornerPoint.getCoordinates().getZ() + box.getDimensions().getLength());
 
-					var generatedByLength = new CornerPoint(coordinate);
-					generatedByLength.setBox(box);
+					var cornerPointByLength = new CornerPoint(coordinate);
+					cornerPointByLength.setBox(box);
 
 					logger.info("Point with coordinates: {}, {}, {} GENERATED",
-							generatedByLength.getCoordinates().getX(), generatedByLength.getCoordinates().getY(),
-							generatedByLength.getCoordinates().getZ());
+							cornerPointByLength.getCoordinates().getX(), cornerPointByLength.getCoordinates().getY(),
+							cornerPointByLength.getCoordinates().getZ());
 
-					availableCornerPoints.add(generatedByLength);
-					points.add(generatedByLength);
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByLength);
+					points.add(cornerPointByLength);
 				}
 
 				if (cornerPoint.getBox().getDimensions().getHeight() < box.getDimensions().getHeight()) {
@@ -378,29 +407,29 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 							cornerPoint.getCoordinates().getY() + cornerPoint.getBox().getDimensions().getHeight(),
 							cornerPoint.getCoordinates().getZ());
 
-					var generatedByHeight = new CornerPoint(coordinate);
-					generatedByHeight.setBox(box);
+					var cornerPointByHeight = new CornerPoint(coordinate);
+					cornerPointByHeight.setBox(box);
 
 					logger.info("Point with coordinates: {}, {}, {} GENERATED",
-							generatedByHeight.getCoordinates().getX(), generatedByHeight.getCoordinates().getY(),
-							generatedByHeight.getCoordinates().getZ());
+							cornerPointByHeight.getCoordinates().getX(), cornerPointByHeight.getCoordinates().getY(),
+							cornerPointByHeight.getCoordinates().getZ());
 
-					availableCornerPoints.add(generatedByHeight);
-					points.add(generatedByHeight);
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByHeight);
+					points.add(cornerPointByHeight);
 				} else {
 					coordinate = new Coordinates(cornerPoint.getCoordinates().getX(),
 							cornerPoint.getCoordinates().getY() + box.getDimensions().getHeight(),
 							cornerPoint.getCoordinates().getZ());
 
-					var generatedByHeight = new CornerPoint(coordinate);
-					generatedByHeight.setBox(box);
+					var cornerPointByHeight = new CornerPoint(coordinate);
+					cornerPointByHeight.setBox(box);
 
 					logger.info("Point with coordinates: {}, {}, {} GENERATED",
-							generatedByHeight.getCoordinates().getX(), generatedByHeight.getCoordinates().getY(),
-							generatedByHeight.getCoordinates().getZ());
+							cornerPointByHeight.getCoordinates().getX(), cornerPointByHeight.getCoordinates().getY(),
+							cornerPointByHeight.getCoordinates().getZ());
 
-					availableCornerPoints.add(generatedByHeight);
-					points.add(generatedByHeight);
+					redisRepository.addToList(AVAILABLE_POINTS_DATA_LIST_NAME, cornerPointByHeight);
+					points.add(cornerPointByHeight);
 				}
 			}
 		} catch (Exception e) {
@@ -408,13 +437,34 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 			throw new RuntimeException("Failed to generate corner points.", e);
 		}
 
-		logger.info("Size of available points array before garbage: {}", availableCornerPoints.size());
+		logger.info("Size of available points array before garbage: {}", retrieveAvailableCornerPoints().size());
 
-		availableCornerPoints = GarbagePoint.collect(points, availableCornerPoints);
+		var removedPoints = GarbagePoint.collect(points, retrieveAvailableCornerPoints());
 
-		logger.info("Size of available points array after garbage: {}", availableCornerPoints.size());
+		for (CornerPoint removedPoint : removedPoints) {
+			redisRepository.removeItemFromList(AVAILABLE_POINTS_DATA_LIST_NAME, removedPoint);
+		}
+		
+		logger.info("Size of available points array after garbage: {}", retrieveAvailableCornerPoints().size());
 	}
+	
+    private List<CornerPoint> retrieveAvailableCornerPoints() {
+        var rawData = redisRepository.retrieveArrayList(AVAILABLE_POINTS_DATA_LIST_NAME, CornerPoint.class);
+        
+        List<CornerPoint> cornerPoints = new ArrayList<>();
+        
+        for (var item : rawData) {
+            try {
+            	CornerPoint cornerPoint = objectMapper.convertValue(item, CornerPoint.class);
+                cornerPoints.add(cornerPoint);
+            } catch (IllegalArgumentException e) {
+                logger.info("Failed to convert item to CornerPoint: " + e.getMessage());
+            }
+        }
 
+        return cornerPoints;
+    }
+	
 	/**
 	 * Calculates the distance between two points in 3D space.
 	 * 
