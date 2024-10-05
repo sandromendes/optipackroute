@@ -3,6 +3,7 @@ package com.codejukebox.optipackroute.core;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import com.codejukebox.optipackroute.core.algorithms.binpacking.anxietatem.AnxietatemAlgorithm;
 import com.codejukebox.optipackroute.persistence.repository.RedisRepositoryImpl;
@@ -14,8 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CoreConfig {
 
     @Bean
-    RedisRepository redisRepository() {
-        return new RedisRepositoryImpl();
+    RedisRepository redisRepository(RedisTemplate<String, Object> redisTemplate, 
+    		ObjectMapper objectMapper) {
+        return new RedisRepositoryImpl(redisTemplate, objectMapper);
     }
 	
     @Bean

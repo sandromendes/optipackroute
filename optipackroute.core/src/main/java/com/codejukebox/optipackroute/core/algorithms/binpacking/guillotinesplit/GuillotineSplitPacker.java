@@ -38,7 +38,7 @@ public class GuillotineSplitPacker implements IBinPackingAlgorithm {
     @Override
     public PackingResult pack() {
         // Ordenar caixas pelo volume decrescente (First-Fit Decreasing)
-        availableBoxes.sort((a, b) -> Integer.compare(b.getVolume(), a.getVolume()));
+        availableBoxes.sort((a, b) -> Integer.compare(b.calculateVolume(), a.calculateVolume()));
 
         // Empacotar cada caixa
         for (var box : availableBoxes) {

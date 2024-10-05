@@ -29,8 +29,9 @@ public class GarbagePoint {
      * @return The updated list of available corner points after removal of redundancies.
      */
     public static List<CornerPoint> collect(List<CornerPoint> points, List<CornerPoint> availablePoints) {
+    	var removedPoints = new ArrayList<CornerPoint>();
+    	
         try {
-        	var removedPoints = new ArrayList<CornerPoint>();
         	
             for (int j = 0; j < points.size(); j++) {
                 for (int i = 0; i < availablePoints.size(); i++) {
@@ -103,7 +104,7 @@ public class GarbagePoint {
             logger.error("Error occurred while collecting corner points: {}", e.getMessage(), e);
         }
 
-        return availablePoints;
+        return removedPoints;
     }
 
 }

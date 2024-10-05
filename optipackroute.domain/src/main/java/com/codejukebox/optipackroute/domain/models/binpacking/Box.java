@@ -49,7 +49,7 @@ public class Box {
 		this.label = label;
 	}
 	
-	public int getVolume() {
+	public int calculateVolume() {
 		return dimensions.getLength()*dimensions.getWidth()*dimensions.getHeight();
 	}
 }

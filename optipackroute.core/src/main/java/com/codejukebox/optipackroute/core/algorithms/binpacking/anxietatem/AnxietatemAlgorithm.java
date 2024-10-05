@@ -1,5 +1,7 @@
 package com.codejukebox.optipackroute.core.algorithms.binpacking.anxietatem;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,7 +40,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 	private int numberOfBoxes;
 	private Dimensions dimensions;
 	
-	private static String AVAILABLE_POINTS_DATA_LIST_NAME = "availableCornerPointsData";
+	private static String AVAILABLE_POINTS_DATA_LIST_NAME = "availableCornerPoints";
 
 	/**
 	 * Constructor for the Packer class.
@@ -50,6 +52,12 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 		this.objectMapper = objectMapper;
 		
 		packedBoxes = new ArrayList<Box>();
+		
+        var now = LocalDateTime.now();
+        var formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        var formattedDateTime = now.format(formatter);
+		
+		AVAILABLE_POINTS_DATA_LIST_NAME += formattedDateTime;
 		
         redisRepository.saveArrayList(AVAILABLE_POINTS_DATA_LIST_NAME, new ArrayList<CornerPoint>());
 		
@@ -441,7 +449,7 @@ public class AnxietatemAlgorithm implements IAnxietatemAlgorithm{
 	}
 	
     private List<CornerPoint> retrieveAvailableCornerPoints() {
-        var rawData = redisRepository.getArrayList(AVAILABLE_POINTS_DATA_LIST_NAME);
+        var rawData = redisRepository.retrieveArrayList(AVAILABLE_POINTS_DATA_LIST_NAME, CornerPoint.class);
         
         List<CornerPoint> cornerPoints = new ArrayList<>();
         

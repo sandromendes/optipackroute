@@ -4,7 +4,10 @@ public class Dimensions {
 
     private int width, length, height;
 
-    public Dimensions(int width, int length, int height) {
+    public Dimensions() {
+	}
+
+	public Dimensions(int width, int length, int height) {
         this.width = width;
         this.length = length;
         this.height = height;
