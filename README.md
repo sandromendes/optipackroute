@@ -1,5 +1,11 @@
 # OptiPackRoute: Optimal Path Routing Algorithms
 
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-brightgreen)
+![Redis](https://img.shields.io/badge/Redis-6.2-red)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+
 ## Objetivo
 Os projetos Floyd-Warshall Enhanced  e Anxietatem Algorithm têm como objetivo central a implementação e exposição de algoritmos avançados para resolver problemas de roteirização de caminhos ótimos e distribuição de carga em contêineres (bin packing). Estes algoritmos são acessíveis via uma API RESTful, permitindo que aplicações clientes os utilizem para calcular rotas otimizadas e soluções de empacotamento eficientes em diferentes cenários logísticos.
 
